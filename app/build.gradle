@@ -6,7 +6,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.tutorme"
+        applicationId "com.mobileedu33.tutorme"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
