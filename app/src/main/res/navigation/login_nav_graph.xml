@@ -3,30 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/startScreenFragment">
 
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.mobileedu33.tutorme.ui.fragments.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
-    <fragment
-        android:id="@+id/splashScreenFragment"
+        android:id="@+id/startScreenFragment"
         android:name="com.mobileedu33.tutorme.ui.fragments.StartScreenFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_splash_screen" >
+        tools:layout="@layout/fragment_start_screen" >
         <action
-            android:id="@+id/action_splashScreenFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment"
+            android:id="@+id/action_startScreenFragment_to_walkthroughFragment1"
+            app:destination="@id/walkthroughFragment1"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
             app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_startScreenFragment_to_welcomeScreenFragment"
+            app:destination="@id/welcomeScreenFragment" />
     </fragment>
     <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.mobileedu33.tutorme.ui.fragments.SignUpFragment"
-        android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
-        <action
-            android:id="@+id/action_signUpFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+        android:id="@+id/walkthroughFragment1"
+        android:name="com.mobileedu33.tutorme.ui.fragments.WalkthroughFragment1"
+        android:label="fragment_walthrough_screen1"
+        tools:layout="@layout/fragment_walthrough_screen1" />
+    <fragment
+        android:id="@+id/welcomeScreenFragment"
+        android:name="com.mobileedu33.tutorme.ui.fragments.WelcomeScreenFragment"
+        android:label="fragment_welcome_screen"
+        tools:layout="@layout/fragment_welcome_screen" />
 </navigation>

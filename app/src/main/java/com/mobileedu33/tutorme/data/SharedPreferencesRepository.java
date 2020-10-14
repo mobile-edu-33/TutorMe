@@ -5,6 +5,7 @@ import javax.inject.Inject;
 
 public class SharedPreferencesRepository {
    public static final String IS_FIRST_RUN = "isFirstRun";
+   public static final String IS_LOGGED_IN = "isLoggedIn";
    private final SharedPreferences sharedPreferences;
 
    @Inject
@@ -23,4 +24,13 @@ public class SharedPreferencesRepository {
    private SharedPreferences.Editor getEditor() {
       return sharedPreferences.edit();
    }
+
+   public boolean isLoggedIn() {
+      return sharedPreferences.getBoolean(IS_LOGGED_IN, false);
+   }
+
+   public void setIsLoggedIn(boolean value) {
+      getEditor().putBoolean(IS_LOGGED_IN, value).apply();
+   }
+
 }
