@@ -1,26 +1,37 @@
 package com.mobileedu33.tutorme.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
-import androidx.navigation.Navigation;
-
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
+import android.view.WindowManager;
 
-import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.mobileedu33.tutorme.R;
-import com.mobileedu33.tutorme.ui.viewmodels.LoginViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
        @Override
     protected void onCreate(Bundle savedInstanceState) {
+           hideActionBar();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+    }
 
+    private void hideActionBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            final WindowInsetsController controller = getWindow().getInsetsController();
+
+            if (controller != null)
+                controller.hide(WindowInsets.Type.navigationBars());
+        }
+        else {
+            getSupportActionBar().hide();
+        }
     }
 
 }

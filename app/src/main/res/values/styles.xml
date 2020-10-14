@@ -4,7 +4,15 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/textColorLight</item>
+    </style>
+
+    <style name="FirebaseUITheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Required for sign-in flow styling -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
     </style>
 
 </resources>
