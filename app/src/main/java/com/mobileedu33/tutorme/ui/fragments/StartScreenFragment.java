@@ -25,6 +25,9 @@ import com.mobileedu33.tutorme.R;
 import java.util.Arrays;
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class StartScreenFragment extends Fragment {
     public static final int AUTH_SIGNIN_REQUEST_CODE = 34;
     private static final String TAG = StartScreenFragment.class.getSimpleName();
