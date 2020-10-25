@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Assignment {
     private String id;
-    private String mentorId;
+    private String creatorId;
     private String title;
     private String description;
     private LocalDateTime datePosted;
@@ -21,12 +21,12 @@ public class Assignment {
         this.id = id;
     }
 
-    public String getMentorId() {
-        return mentorId;
+    public String getCreatorId() {
+        return creatorId;
     }
 
-    public void setMentorId(String mentorId) {
-        this.mentorId = mentorId;
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 
     public String getTitle() {

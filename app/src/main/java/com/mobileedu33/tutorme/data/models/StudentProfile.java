@@ -1,19 +1,20 @@
 package com.mobileedu33.tutorme.data.models;
 
-public class Tutor {
-    private String id;
+public class StudentProfile {
+    private String userId;
     private String firstName;
     private String lastName;
     private String email;
     private String getEmail;
     private String photoUrl;
 
-    public String getId() {
-        return id;
+
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
