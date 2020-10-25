@@ -66,7 +66,8 @@ public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
         TutorProfile profile = new TutorProfile();
         profile.setEmail(user.getEmail());
         profile.setDisplayName(user.getDisplayName());
-        profile.setPhotoUrl(user.getPhotoUrl().toString());
+        Uri photoUrl = user.getPhotoUrl();
+        if (photoUrl != null) profile.setPhotoUrl(user.getPhotoUrl().toString());
         profile.setId(user.getUid());
 
         try {
