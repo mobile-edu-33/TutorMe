@@ -1,0 +1,81 @@
+package com.mobileedu33.tutorme.data;
+
+import android.net.Uri;
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.mobileedu33.tutorme.data.models.StudentProfile;
+import com.mobileedu33.tutorme.data.models.TutorProfile;
+import com.mobileedu33.tutorme.data.models.UserType;
+import com.techyourchance.threadposter.BackgroundThreadPoster;
+import com.techyourchance.threadposter.UiThreadPoster;
+
+import javax.inject.Inject;
+
+public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
+    private final FirebaseHelper firebaseHelper;
+    private static final String TAG = CreateUserProfileUseCase.class.getSimpleName();
+
+    @Inject
+    public CreateUserProfileUseCase(FirebaseHelper firebaseHelper,
+                                    BackgroundThreadPoster backgroundThreadPoster,
+                                    UiThreadPoster uiThreadPoster) {
+        super(backgroundThreadPoster, uiThreadPoster);
+        this.firebaseHelper = firebaseHelper;
+    }
+
+    public void createNewProfile(UserType userType) {
+        executeInBackground(() -> execute(userType));
+    }
+
+    private void execute(UserType userType) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance()
+                .getCurrentUser();
+        switch (userType) {
+            case TUTOR:
+                createNewTutorProfile(currentUser);
+                break;
+            case STUDENT:
+                createNewStudentProfile(currentUser);
+                break;
+        }
+    }
+
+    private void createNewStudentProfile(FirebaseUser user) {
+        if(user == null) throw new IllegalStateException("User should not be null.");
+        StudentProfile profile = new StudentProfile();
+        profile.setEmail(user.getEmail());
+        profile.setDisplayName(user.getDisplayName());
+        Uri photoUrl = user.getPhotoUrl();
+        if (photoUrl != null) profile.setPhotoUrl(user.getPhotoUrl().toString());
+        profile.setUserId(user.getUid());
+
+        try {
+            boolean isSuccess = firebaseHelper.saveStudentProfile(profile, user.getUid());
+            if (isSuccess) notifySuccess(null);
+            else notifyError(null);
+        } catch (Exception e) {
+            Log.e(TAG, "Error creating saving data", e);
+            notifyError(null);
+        }
+    }
+
+    private void createNewTutorProfile(FirebaseUser user) {
+        if(user == null) throw new IllegalStateException("User should not be null.");
+        TutorProfile profile = new TutorProfile();
+        profile.setEmail(user.getEmail());
+        profile.setDisplayName(user.getDisplayName());
+        profile.setPhotoUrl(user.getPhotoUrl().toString());
+        profile.setId(user.getUid());
+
+        try {
+            boolean isSuccess = firebaseHelper.saveTutorProfile(profile, user.getUid());
+            if (isSuccess) notifySuccess(null);
+            else notifyError(null);
+        } catch (Exception e) {
+            Log.e(TAG, "Error creating saving data", e);
+            notifyError(null);
+        }
+    }
+}

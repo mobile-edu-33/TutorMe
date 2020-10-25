@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -69,6 +70,7 @@ public class StartScreenFragment extends Fragment implements SignInUtils.SignInR
                             handleNotFirstTimeRun();
                         }
                     });
+            isSigninInProgress = true;
         }
     }
 
@@ -92,29 +94,34 @@ public class StartScreenFragment extends Fragment implements SignInUtils.SignInR
     @Override
     public void onSignInSuccess(IdpResponse response) {
         if (!response.isNewUser()) {
-            baseActivity.showMessageSnackBar(R.string.welcome_back);
+            baseActivity.showMessageSnackBar(R.string.welcome_back, null, null);
         }
-
         loginViewModel.setIsFirstRunFalse();
         Intent intent = new Intent(requireContext(), MainActivity.class);
         startActivity(intent);
         requireActivity().finish();
+
     }
 
     @Override
     public void onSignInError(IdpResponse response) {
         if (response == null) {
             // User pressed back button
-            baseActivity.showMessageSnackBar(R.string.sign_in_cancelled);
+            baseActivity.showMessageSnackBar(R.string.sign_in_cancelled, "RETRY", () -> SignInUtils.signIn(this));
             return;
         }
 
         if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-            baseActivity.showMessageSnackBar(R.string.no_internet_connection);
+            baseActivity.showMessageSnackBar(R.string.no_internet_connection, null, null);
             return;
         }
-        baseActivity.showMessageSnackBar(R.string.unknown_error);
+        baseActivity.showMessageSnackBar(R.string.unknown_error, null, null);
         Log.e(TAG, "Sign-in error: ", response.getError());
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        loginViewModel.removeLiveDataObservers(this);
+    }
 }

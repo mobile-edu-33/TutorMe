@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class FireBaseHelperTests {
 
@@ -21,22 +22,21 @@ public class FireBaseHelperTests {
 
     @Before
     public void initialize() {
-        FirebaseApp firebaseApp = FirebaseApp.
+        FirebaseApp.
                 initializeApp(InstrumentationRegistry.getInstrumentation().getContext());
-        firebaseHelper = new FirebaseHelper(FirebaseFirestore.getInstance(firebaseApp));
+        firebaseHelper = new FirebaseHelper();
     }
 
     @Test
     public void getAssignmentsTest() {
         String mentorId = "GQ4CVOwA3nMJq2Kj3gQ9";
-        List<Assignment> assignments = firebaseHelper.getAssignments(Collections.singletonList(mentorId));
-        Assert.assertEquals(2, assignments.size());
-    }
+        List<Assignment> assignments = Collections.emptyList();
+        try {
+            assignments.addAll(firebaseHelper.getAssignments(Collections.singletonList(mentorId)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    @Test
-    public void getAssignmentsFromSingleColTest() {
-        String mentorId = "GQ4CVOwA3nMJq2Kj3gQ9";
-        List<Assignment> assignments = firebaseHelper.getAssignmentsSingleBucket(mentorId);
         Assert.assertEquals(2, assignments.size());
     }
 

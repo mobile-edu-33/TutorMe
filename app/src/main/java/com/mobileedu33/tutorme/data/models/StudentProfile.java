@@ -2,10 +2,8 @@ package com.mobileedu33.tutorme.data.models;
 
 public class StudentProfile {
     private String userId;
-    private String firstName;
-    private String lastName;
+    private String displayName;
     private String email;
-    private String getEmail;
     private String photoUrl;
 
 
@@ -17,20 +15,12 @@ public class StudentProfile {
         this.userId = userId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getEmail() {
@@ -39,14 +29,6 @@ public class StudentProfile {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getGetEmail() {
-        return getEmail;
-    }
-
-    public void setGetEmail(String getEmail) {
-        this.getEmail = getEmail;
     }
 
     public String getPhotoUrl() {

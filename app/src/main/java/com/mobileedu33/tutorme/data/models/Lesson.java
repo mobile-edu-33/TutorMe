@@ -10,7 +10,6 @@ public class Lesson {
     private String imageUrl;
     private String link;
 
-
     public String getId() {
         return id;
     }

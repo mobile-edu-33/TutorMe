@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,7 @@ public class SignInUtils {
         // Specify sign in methods
         List<AuthUI.IdpConfig> idpConfigs = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build()
+                new AuthUI.IdpConfig.GoogleBuilder().setScopes(List.of(Scopes.PROFILE, Scopes.EMAIL)).build()
         );
 
 

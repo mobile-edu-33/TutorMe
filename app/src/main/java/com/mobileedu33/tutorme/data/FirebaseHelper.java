@@ -10,10 +10,10 @@ import com.mobileedu33.tutorme.data.models.Lesson;
 import com.mobileedu33.tutorme.data.models.LiveLesson;
 import com.mobileedu33.tutorme.data.models.StudentProfile;
 import com.mobileedu33.tutorme.data.models.TutorProfile;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+import javax.inject.Inject;
 
 public class FirebaseHelper {
     public static final String ASSIGNMENTS_ALL = "assignments-all";
@@ -23,9 +23,9 @@ public class FirebaseHelper {
     public static final String STUDENTS = "students";
     private FirebaseFirestore firebaseFirestore;
 
-    public FirebaseHelper(FirebaseFirestore firebaseFirestore) {
-        FirebaseFirestore.getInstance();
-        this.firebaseFirestore = firebaseFirestore;
+    @Inject
+    public FirebaseHelper() {
+        this.firebaseFirestore = FirebaseFirestore.getInstance();
     }
 
     public List<Assignment> getAssignments(List<String> creatorIds) throws ExecutionException, InterruptedException {

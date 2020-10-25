@@ -1,7 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
-        google()
         jcenter()
         google()  // Google's Maven repository
     }
@@ -11,6 +10,7 @@ buildscript {
         // in the individual module build.gradle files
         classpath 'com.google.gms:google-services:4.3.4'
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.29.1-alpha'
+        classpath "io.realm:realm-gradle-plugin:10.0.0"
     }
 }
 
