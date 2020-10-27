@@ -14,15 +14,15 @@ import com.techyourchance.threadposter.UiThreadPoster;
 import javax.inject.Inject;
 
 public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
-    private final FirebaseHelper firebaseHelper;
+    private final FireStoreHelper fireStoreHelper;
     private static final String TAG = CreateUserProfileUseCase.class.getSimpleName();
 
     @Inject
-    public CreateUserProfileUseCase(FirebaseHelper firebaseHelper,
+    public CreateUserProfileUseCase(FireStoreHelper fireStoreHelper,
                                     BackgroundThreadPoster backgroundThreadPoster,
                                     UiThreadPoster uiThreadPoster) {
         super(backgroundThreadPoster, uiThreadPoster);
-        this.firebaseHelper = firebaseHelper;
+        this.fireStoreHelper = fireStoreHelper;
     }
 
     public void createNewProfile(UserType userType) {
@@ -44,6 +44,7 @@ public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
 
     private void createNewStudentProfile(FirebaseUser user) {
         if(user == null) throw new IllegalStateException("User should not be null.");
+
         StudentProfile profile = new StudentProfile();
         profile.setEmail(user.getEmail());
         profile.setDisplayName(user.getDisplayName());
@@ -52,7 +53,7 @@ public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
         profile.setUserId(user.getUid());
 
         try {
-            boolean isSuccess = firebaseHelper.saveStudentProfile(profile, user.getUid());
+            boolean isSuccess = fireStoreHelper.saveStudentProfile(profile, user.getUid());
             if (isSuccess) notifySuccess(null);
             else notifyError(null);
         } catch (Exception e) {
@@ -71,7 +72,7 @@ public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
         profile.setId(user.getUid());
 
         try {
-            boolean isSuccess = firebaseHelper.saveTutorProfile(profile, user.getUid());
+            boolean isSuccess = fireStoreHelper.saveTutorProfile(profile, user.getUid());
             if (isSuccess) notifySuccess(null);
             else notifyError(null);
         } catch (Exception e) {

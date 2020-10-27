@@ -1,11 +1,58 @@
 package com.mobileedu33.tutorme.data.models;
 
-public class TutorProfile {
+import io.realm.RealmObject;
+
+public class TutorProfile extends RealmObject {
     private String id;
     private String displayName;
     private String email;
-    private String getEmail;
     private String photoUrl;
+    private String subject;
+    private String idNumber;
+    private String phone;
+    private String address;
+    private String city;
+    private String school;
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
 
     public String getId() {
         return id;
@@ -31,13 +78,6 @@ public class TutorProfile {
         this.email = email;
     }
 
-    public String getGetEmail() {
-        return getEmail;
-    }
-
-    public void setGetEmail(String getEmail) {
-        this.getEmail = getEmail;
-    }
 
     public String getPhotoUrl() {
         return photoUrl;
@@ -45,5 +85,13 @@ public class TutorProfile {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

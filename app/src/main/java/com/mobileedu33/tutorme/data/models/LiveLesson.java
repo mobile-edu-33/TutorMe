@@ -2,15 +2,19 @@ package com.mobileedu33.tutorme.data.models;
 
 import java.time.LocalDateTime;
 
-public class LiveLesson {
+import io.realm.RealmObject;
+
+public class LiveLesson extends RealmObject {
     private String id;
     private String title;
     private String description;
+
+    private String subject;
+
     private LocalDateTime datePosted;
     private LocalDateTime dateScheduled;
     private String imageUrl;
     private String link;
-
 
     public String getId() {
         return id;
@@ -18,6 +22,14 @@ public class LiveLesson {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getTitle() {

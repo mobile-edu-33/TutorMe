@@ -2,11 +2,14 @@ package com.mobileedu33.tutorme.data.models;
 
 import java.time.LocalDateTime;
 
-public class Assignment {
+import io.realm.RealmObject;
+
+public class Assignment extends RealmObject {
     private String id;
     private String creatorId;
     private String title;
     private String description;
+    private String subject;
     private LocalDateTime datePosted;
     private LocalDateTime dateDue;
     private String imageUrl;
@@ -75,5 +78,13 @@ public class Assignment {
 
     public void setAttachmentsUrl(String attachmentsUrl) {
         this.attachmentsUrl = attachmentsUrl;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

@@ -1,11 +1,30 @@
 package com.mobileedu33.tutorme.data.models;
 
-public class StudentProfile {
+import io.realm.RealmObject;
+
+public class StudentProfile extends RealmObject {
     private String userId;
     private String displayName;
     private String email;
     private String photoUrl;
+    private String phone;
+    private String address;
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getUserId() {
         return userId;

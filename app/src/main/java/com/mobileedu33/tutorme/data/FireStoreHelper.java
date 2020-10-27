@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import javax.inject.Inject;
 
-public class FirebaseHelper {
+public class FireStoreHelper {
     public static final String ASSIGNMENTS_ALL = "assignments-all";
     public static final String SCHEDULED_LESSONS = "scheduled-lessons";
     public static final String RECORDED_LESSONS = "recorded-lessons";
@@ -24,7 +24,7 @@ public class FirebaseHelper {
     private FirebaseFirestore firebaseFirestore;
 
     @Inject
-    public FirebaseHelper() {
+    public FireStoreHelper() {
         this.firebaseFirestore = FirebaseFirestore.getInstance();
     }
 
