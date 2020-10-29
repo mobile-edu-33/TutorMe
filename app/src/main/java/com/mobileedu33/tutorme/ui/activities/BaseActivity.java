@@ -18,6 +18,7 @@ public class BaseActivity extends AppCompatActivity {
                 snackbar.dismiss();
             });
         }
+        snackbar.show();
     }
 
     public void showMessageSnackBar(String string, String actionTitle, Runnable onActionClicked) {
@@ -29,5 +30,6 @@ public class BaseActivity extends AppCompatActivity {
                 snackbar.dismiss();
             });
         }
+        snackbar.show();
     }
 }

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#B39DDB</color>
+    <color name="colorAccent">#039BE5</color>
     <color name="black_overlay">#66000000</color>
     <color name="textColorLight">#EDE7F6</color>
     <color name="light_background_color">#EDE7F6</color>

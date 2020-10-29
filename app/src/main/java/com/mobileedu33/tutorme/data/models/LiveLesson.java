@@ -1,18 +1,18 @@
 package com.mobileedu33.tutorme.data.models;
 
-import java.time.LocalDateTime;
+import io.realm.RealmModel;
+import io.realm.annotations.RealmClass;
 
-import io.realm.RealmObject;
-
-public class LiveLesson extends RealmObject {
+@RealmClass
+public class LiveLesson implements RealmModel {
     private String id;
     private String title;
     private String description;
 
     private String subject;
 
-    private LocalDateTime datePosted;
-    private LocalDateTime dateScheduled;
+    private String datePosted;
+    private String dateScheduled;
     private String imageUrl;
     private String link;
 
@@ -48,22 +48,6 @@ public class LiveLesson extends RealmObject {
         this.description = description;
     }
 
-    public LocalDateTime getDatePosted() {
-        return datePosted;
-    }
-
-    public void setDatePosted(LocalDateTime datePosted) {
-        this.datePosted = datePosted;
-    }
-
-    public LocalDateTime getDateScheduled() {
-        return dateScheduled;
-    }
-
-    public void setDateScheduled(LocalDateTime dateScheduled) {
-        this.dateScheduled = dateScheduled;
-    }
-
     public String getLink() {
         return link;
     }
@@ -78,5 +62,21 @@ public class LiveLesson extends RealmObject {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(String datePosted) {
+        this.datePosted = datePosted;
+    }
+
+    public String getDateScheduled() {
+        return dateScheduled;
+    }
+
+    public void setDateScheduled(String dateScheduled) {
+        this.dateScheduled = dateScheduled;
     }
 }

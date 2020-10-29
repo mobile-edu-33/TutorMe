@@ -1,19 +1,22 @@
 package com.mobileedu33.tutorme.data.models;
 
-import java.time.LocalDateTime;
+import io.realm.RealmModel;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
-import io.realm.RealmObject;
-
-public class Assignment extends RealmObject {
-    private String id;
-    private String creatorId;
-    private String title;
-    private String description;
-    private String subject;
-    private LocalDateTime datePosted;
-    private LocalDateTime dateDue;
-    private String imageUrl;
-    private String attachmentsUrl;
+@RealmClass
+public class Assignment implements RealmModel {
+    @PrimaryKey
+    private String refId = "";
+    private String id = "";
+    private String creatorId= "";
+    private String title= "";
+    private String description= "";
+    private String subject= "";
+    private String datePosted= "";
+    private String dateDue= "";
+    private String imageUrl= "";
+    private String attachmentsUrl= "";
 
 
     public String getId() {
@@ -48,22 +51,6 @@ public class Assignment extends RealmObject {
         this.description = description;
     }
 
-    public LocalDateTime getDatePosted() {
-        return datePosted;
-    }
-
-    public void setDatePosted(LocalDateTime datePosted) {
-        this.datePosted = datePosted;
-    }
-
-    public LocalDateTime getDateDue() {
-        return dateDue;
-    }
-
-    public void setDateDue(LocalDateTime dateDue) {
-        this.dateDue = dateDue;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -86,5 +73,29 @@ public class Assignment extends RealmObject {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
+    }
+
+    public String getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(String datePosted) {
+        this.datePosted = datePosted;
+    }
+
+    public String getDateDue() {
+        return dateDue;
+    }
+
+    public void setDateDue(String dateDue) {
+        this.dateDue = dateDue;
     }
 }

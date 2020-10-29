@@ -13,6 +13,8 @@ import com.techyourchance.threadposter.UiThreadPoster;
 
 import javax.inject.Inject;
 
+import io.realm.Realm;
+
 public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
     private final FireStoreHelper fireStoreHelper;
     private static final String TAG = CreateUserProfileUseCase.class.getSimpleName();
@@ -50,11 +52,11 @@ public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
         profile.setDisplayName(user.getDisplayName());
         Uri photoUrl = user.getPhotoUrl();
         if (photoUrl != null) profile.setPhotoUrl(user.getPhotoUrl().toString());
-        profile.setUserId(user.getUid());
+        profile.setId(user.getUid());
 
         try {
             boolean isSuccess = fireStoreHelper.saveStudentProfile(profile, user.getUid());
-            if (isSuccess) notifySuccess(null);
+            if (isSuccess) handleCreateStudentSuccess(profile);
             else notifyError(null);
         } catch (Exception e) {
             Log.e(TAG, "Error creating saving data", e);
@@ -73,11 +75,30 @@ public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
 
         try {
             boolean isSuccess = fireStoreHelper.saveTutorProfile(profile, user.getUid());
-            if (isSuccess) notifySuccess(null);
+            if (isSuccess) handleCreateTutorSuccess(profile);
             else notifyError(null);
         } catch (Exception e) {
             Log.e(TAG, "Error creating saving data", e);
             notifyError(null);
         }
     }
+
+    private void handleCreateTutorSuccess(TutorProfile tutorProfile) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(tutorProfile);
+        realm.commitTransaction();
+        realm.close();
+        notifySuccess(null);
+    }
+
+    private void handleCreateStudentSuccess(StudentProfile studentProfile) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(studentProfile);
+        realm.commitTransaction();
+        realm.close();
+        notifySuccess(null);
+    }
+
 }

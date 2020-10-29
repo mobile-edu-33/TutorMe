@@ -1,8 +1,13 @@
 package com.mobileedu33.tutorme.data.models;
 
-import io.realm.RealmObject;
+import io.realm.RealmModel;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
-public class TutorProfile extends RealmObject {
+@RealmClass
+public class TutorProfile implements RealmModel {
+    @PrimaryKey
+    private String PRIMARY_KEY = StudentProfile.class.getSimpleName();
     private String id;
     private String displayName;
     private String email;

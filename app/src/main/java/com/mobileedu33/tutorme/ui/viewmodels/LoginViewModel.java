@@ -16,7 +16,7 @@ public class LoginViewModel extends BaseViewModel {
     private final SharedPreferencesRepository sharedPreferencesRepository;
     private final CreateUserProfileUseCase createUserProfileUseCase;
     private final MutableLiveData<Boolean> createProfileLiveData = new MutableLiveData<>();
-    private UserType userType = UserType.STUDENT;
+    private UserType userType = UserType.TUTOR;
     private boolean isLoggedIn;
 
     @ViewModelInject

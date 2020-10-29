@@ -1,15 +1,15 @@
 package com.mobileedu33.tutorme.data.models;
 
-import java.time.LocalDateTime;
+import io.realm.RealmModel;
+import io.realm.annotations.RealmClass;
 
-import io.realm.RealmObject;
-
-public class Lesson extends RealmObject {
+@RealmClass
+public class Lesson implements RealmModel {
     private String id;
     private String title;
     private String description;
     private String subject;
-    private LocalDateTime datePosted;
+    private String datePosted;
     private String imageUrl;
     private String link;
 
@@ -37,14 +37,6 @@ public class Lesson extends RealmObject {
         this.description = description;
     }
 
-    public LocalDateTime getDatePosted() {
-        return datePosted;
-    }
-
-    public void setDatePosted(LocalDateTime datePosted) {
-        this.datePosted = datePosted;
-    }
-
     public String getLink() {
         return link;
     }
@@ -67,5 +59,13 @@ public class Lesson extends RealmObject {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(String datePosted) {
+        this.datePosted = datePosted;
     }
 }

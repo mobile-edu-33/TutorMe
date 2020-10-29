@@ -1,9 +1,14 @@
 package com.mobileedu33.tutorme.data.models;
 
-import io.realm.RealmObject;
+import io.realm.RealmModel;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
-public class StudentProfile extends RealmObject {
-    private String userId;
+@RealmClass
+public class StudentProfile implements RealmModel {
+    @PrimaryKey
+    private static final String PRIMARY_KEY = StudentProfile.class.getSimpleName();
+    private String id;
     private String displayName;
     private String email;
     private String photoUrl;
@@ -26,12 +31,12 @@ public class StudentProfile extends RealmObject {
         this.address = address;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDisplayName() {

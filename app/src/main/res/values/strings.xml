@@ -9,4 +9,6 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="account_created_successfully">Your account has been created successfully!</string>
     <string name="welcome_back">Welcome back!</string>
+    <string name="assigment_title">Assignment title</string>
+    <string name="assignment_description">Assignment description</string>
 </resources>

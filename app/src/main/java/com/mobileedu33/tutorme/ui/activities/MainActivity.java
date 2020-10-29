@@ -1,11 +1,14 @@
 package com.mobileedu33.tutorme.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.mobileedu33.tutorme.R;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -15,5 +18,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.button)
+    public void onClick() {
+        startActivity(new Intent(this, CreateAssignmentActivity.class));
     }
 }
