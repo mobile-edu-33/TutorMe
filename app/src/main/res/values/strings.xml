@@ -1,14 +1,39 @@
 <resources>
-    <string name="app_name">TutorMe</string>
+
+    <string name="app_name">Tutorme Online Learning</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sign_in_cancelled">"Sign in was cancelled. "</string>
     <string name="no_internet_connection">No internet connection. Check your settings!</string>
-    <string name="unknown_error">An unexpected error occured. Please restart app and try again.</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="unknown_error">An unexpected error occurred. Please restart app and try again.</string>
     <string name="account_created_successfully">Your account has been created successfully!</string>
     <string name="welcome_back">Welcome back!</string>
     <string name="assigment_title">Assignment title</string>
     <string name="assignment_description">Assignment description</string>
+
+    <string name="tutorme">Tutorme Online Learning</string>
+    <string name="tag_line">Learn from professionals</string>
+
+    <!-- Strings for On Boarding screens -->
+
+    <!-- Titles -->
+    <string name="first_slide_title">Sign Up as a Student or Teacher</string>
+    <string name="second_slide_title">Upload videos and notes</string>
+    <string name="third_slide_title">View lessons and add notes</string>
+    <string name="fourth_slide_title">Request online tutoring</string>
+
+    <!-- Description-->
+    <string name="first_slide_desc">You can either sign up as a student or as a teacher, and you will be directed to the appropriate dashboard</string>
+    <string name="second_slide_desc">When you sign up as a teacher, you will be presented with a dashboard where you can upload videos, notes, manage students, etc. </string>
+    <string name="third_slide_desc">As a student, you can view lessons from subjects of your choice, save and edit notes, interact with other learners, etc</string>
+    <string name="fourth_slide_desc">Students can request online private lessons from a specific teacher, either as individual or a group. Subject to approval.</string>
+
+    <!--Buttons-->
+    <string name="skip_btn">Skip</string>
+    <string name="let_get_started">Get Started</string>
+    <string name="lesson_description">This poem was released in 1900, it is about a Roman Emperor</string>
+    <string name="lesson_title">Title</string>
+    <string name="add_lesson_description">Description</string>
+    <string name="add_lesson_date_uploaded">Date Uploaded</string>
+    <string name="add_lesson_video">Add Video</string>
+    <string name="upload_video_button">Upload Video</string>
 </resources>

@@ -13,14 +13,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activities.CreateAssignmentActivity"></activity>
-        <activity android:name=".ui.activities.LoginActivity">
+        <activity android:name=".ui.activities.LoginActivity"/>
+        <activity android:name=".ui.activities.MainActivity" />
+        <activity android:name=".ui.activities.Common.AllSubjects"></activity>
+        <activity android:name=".ui.activities.Student.StudentDashboard" />
+        <activity android:name=".ui.activities.Common.OnBoardingActivity" />
+        <activity android:name=".ui.activities.Tutor.TutorRegisterActivity" />
+        <activity android:name=".ui.activities.Tutor.TutorLoginActivity" />
+        <activity android:name=".ui.activities.Student.StudentRegisterActivity" />
+        <activity android:name=".ui.activities.Tutor.TutorSignUpActivity" />
+        <activity android:name=".ui.activities.Student.LoginActivity2" />
+        <activity android:name=".ui.activities.Student.StudentSignUpActivity" />
+        <activity android:name=".ui.activities.Common.ChooseCategoryActivity" />
+        <activity android:name=".ui.activities.Common.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.MainActivity" />
     </application>
 
 </manifest>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- To create a menu first create a group-->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="HOME"
+            android:icon="@drawable/dashboard_icon"/>
+        <item
+            android:id="@+id/nav_view_tutors"
+            android:title="TEACHERS"
+            android:icon="@drawable/tutor_profile"/>
+        <item
+            android:id="@+id/nav_subjects"
+            android:title="SUBJECTS"
+            android:icon="@drawable/subjects_icon"/>
+        <item
+            android:id="@+id/nav_videos"
+            android:title="VIDEOS"
+            android:icon="@drawable/videos_icon"/>
+    </group>
+
+    <item android:title="PROFILE">
+        <menu>
+
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_user_profile"
+                    android:title="PROFILE"
+                    android:icon="@drawable/user_profile"/>
+                <item
+                    android:id="@+id/nav_assignments"
+                    android:title="ASSIGNMENTS"
+                    android:icon="@drawable/assignment_icon"/>
+            </group>
+
+        </menu>
+    </item>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_settings"
+            android:title="SETTINGS"
+            android:icon="@drawable/settings_icon"/>
+        <item
+            android:id="@+id/nav_logout"
+            android:title="LOGOUT"
+            android:icon="@drawable/logout_icon"/>
+    </group>
+
+    <item android:title="SHARE">
+        <menu>
+
+            <group android:checkableBehavior="none">
+                <item
+                    android:id="@+id/nav_share"
+                    android:title="SHARE"
+                    android:icon="@drawable/share_icon"/>
+                <item
+                    android:id="@+id/nav_rate_us"
+                    android:title="RATE US"
+                    android:icon="@drawable/rate_review_icon"/>
+            </group>
+
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="8dp"
+    android:layout_margin="12dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp"
+        android:background="@color/home_background">
+
+       <ImageView
+           android:id="@+id/tutor_display_img"
+           android:layout_width="100dp"
+           android:layout_height="100dp"
+           android:src="@drawable/tutor_image"
+           android:contentDescription="TODO" />
+
+        <TextView
+            android:id="@+id/tutor_display_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Miss Olivia Govender"
+            android:textSize="16sp"
+            android:layout_toRightOf="@id/tutor_display_img"
+            android:paddingLeft="10dp"
+            android:textColor="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/tutor_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="13 km away"
+            android:layout_toEndOf="@id/tutor_display_img"
+            android:layout_below="@id/tutor_display_name"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="#000"/>
+
+        <TextView
+            android:id="@+id/tutor_student_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="245 Student(s)"
+            android:layout_toRightOf="@id/tutor_display_img"
+            android:layout_below="@id/tutor_distance"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/colorPrimary"/>
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_toEndOf="@id/tutor_display_img"
+            android:layout_below="@id/tutor_student_counter"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:rating="4"/>
+
+
+
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

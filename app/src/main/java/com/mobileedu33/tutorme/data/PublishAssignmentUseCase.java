@@ -27,7 +27,7 @@ public class PublishAssignmentUseCase extends BaseUseCase<Void, String> {
     }
 
     public void publish(Assignment assignment, File attachment, File imageUrl) {
-        executeInBackground(() -> execute(assignment, attachment, imageUrl));
+       executeInBackground(() -> execute(assignment, attachment, imageUrl));
     }
 
     private void execute(Assignment assignment, File attachment, File imageUrl) {

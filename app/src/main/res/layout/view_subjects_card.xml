@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="260dp"
+    android:layout_height="180dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="8dp"
+    android:layout_marginLeft="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/subject_image"
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            android:src="@drawable/english_subject"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/subject_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="English"
+            android:layout_toRightOf="@id/subject_image"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
+            android:textColor="@color/buttonsColor"/>
+
+        <TextView
+            android:id="@+id/tv_lesson_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25 Lessons"
+            android:layout_toRightOf="@id/subject_image"
+            android:layout_below="@id/subject_title"
+            android:layout_marginLeft="10dp"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
