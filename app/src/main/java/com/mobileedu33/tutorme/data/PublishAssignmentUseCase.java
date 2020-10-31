@@ -30,7 +30,7 @@ public class PublishAssignmentUseCase extends BaseUseCase<Void, String> {
        executeInBackground(() -> execute(assignment, attachment, imageUrl));
     }
 
-    private void execute(Assignment assignment, File attachment, File imageUrl) {
+    protected void execute(Assignment assignment, File attachment, File imageUrl) {
         this.currentAssignment = assignment;
         Realm realm = Realm.getDefaultInstance();
         TutorProfile tutorProfile = realm.where(TutorProfile.class).findFirst();
