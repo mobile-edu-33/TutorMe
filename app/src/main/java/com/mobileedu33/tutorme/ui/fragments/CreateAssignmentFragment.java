@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -186,21 +187,28 @@ public class CreateAssignmentFragment extends Fragment {
     }
 
     private void handleChooseFileResponse(int requestCode, Uri uri) {
-        try {
-            File file = new File(Objects.requireNonNull(FilePathUtil.getPath(requireContext(), uri)));
-            switch (requestCode) {
-                case PICK_IMAGE_FILE:
-                    image = file;
-                    Glide.with(this)
-                            .load(uri)
-                            .placeholder(R.drawable.grey_background)
-                            .into(imageViewHeaderImage);
-                    break;
-                case PICK_ATTACHMENT_FILE:
-                    attachment = file;
+        File file = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String filePath = FilePathUtil.getPathOreo(uri);
+            file = new File(filePath);
+        } else {
+            try {
+                file = new File(Objects.requireNonNull(FilePathUtil.getPath(requireContext(), uri)));
+            } catch (URISyntaxException e) {
+                Log.e(CreateAssignmentFragment.class.getSimpleName(), "Error parsing uri", e);
             }
-        } catch (URISyntaxException e) {
-            Log.e(CreateAssignmentFragment.class.getSimpleName(), "Error parsing uri", e);
+        }
+
+        switch (requestCode) {
+            case PICK_IMAGE_FILE:
+                image = file;
+                Glide.with(this)
+                        .load(uri)
+                        .placeholder(R.drawable.grey_background)
+                        .into(imageViewHeaderImage);
+                break;
+            case PICK_ATTACHMENT_FILE:
+                attachment = file;
         }
     }
 
