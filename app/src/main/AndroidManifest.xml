@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mobileedu33.tutorme">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".TutorMeApplication"
@@ -12,12 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.CreateAssignmentFragment"></activity>
-        <activity android:name=".ui.activities.LoginActivity"/>
+        <activity android:name=".ui.activities.AssignmentsActivity"></activity>
+        <activity android:name=".ui.fragments.CreateAssignmentFragment" />
+        <activity android:name=".ui.activities.LoginActivity" />
         <activity android:name=".ui.activities.MainActivity" />
-        <activity android:name=".ui.activities.Common.AllSubjects"></activity>
-        <activity android:name=".ui.activities.Common.DashboardActivity"
-            android:theme="@style/AppThemeNoActionBar"/>
+        <activity android:name=".ui.activities.Common.AllSubjects" />
+        <activity
+            android:name=".ui.activities.Common.DashboardActivity"
+            android:theme="@style/AppThemeNoActionBar" />
         <activity android:name=".ui.activities.Common.OnBoardingActivity" />
         <activity android:name=".ui.activities.Tutor.TutorRegisterActivity" />
         <activity android:name=".ui.activities.Tutor.TutorLoginActivity" />

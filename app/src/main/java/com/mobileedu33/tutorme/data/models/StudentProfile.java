@@ -1,6 +1,11 @@
 package com.mobileedu33.tutorme.data.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.RealmList;
 import io.realm.RealmModel;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
@@ -14,7 +19,6 @@ public class StudentProfile implements RealmModel, UserProfile {
     private String photoUrl;
     private String phone;
     private String address;
-
     public String getPhone() {
         return phone;
     }
@@ -62,4 +66,5 @@ public class StudentProfile implements RealmModel, UserProfile {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
+
 }

@@ -36,4 +36,5 @@
     <string name="add_lesson_date_uploaded">Date Uploaded</string>
     <string name="add_lesson_video">Add Video</string>
     <string name="upload_video_button">Upload Video</string>
+    <string name="nothing_to_show">Nothing to show at the moment</string>
 </resources>

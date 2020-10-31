@@ -32,6 +32,7 @@ import com.mobileedu33.tutorme.ui.HelperClasses.TutorDisplayClass.TutorDisplayAd
 import com.mobileedu33.tutorme.ui.HelperClasses.TutorDisplayClass.TutorDisplayHelper;
 import com.mobileedu33.tutorme.ui.HelperClasses.ViewLessonClasses.ViewLessonAdapter;
 import com.mobileedu33.tutorme.ui.HelperClasses.ViewLessonClasses.ViewLessonsHelper;
+import com.mobileedu33.tutorme.ui.activities.AssignmentsActivity;
 import com.mobileedu33.tutorme.ui.activities.BaseActivity;
 import com.mobileedu33.tutorme.ui.activities.LoginActivity;
 import com.mobileedu33.tutorme.ui.fragments.AssignmentFragment;
@@ -258,6 +259,9 @@ public class DashboardActivity extends BaseActivity implements NavigationView.On
         switch (menuItem.getItemId()) {
             case R.id.nav_subjects:
                 startActivity(new Intent(getApplicationContext(), AllSubjects.class));
+                break;
+            case R.id.nav_assignments:
+                startActivity(new Intent(this, AssignmentsActivity.class));
                 break;
             case R.id.nav_logout:
                 logout();

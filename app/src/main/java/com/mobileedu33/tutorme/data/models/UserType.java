@@ -9,4 +9,11 @@ public enum UserType {
         value = i;
     }
 
+    public static UserType getByValue(int value) {
+        for (UserType userType : values()) {
+            if(userType.value == value) return userType;
+        }
+        return null;
+    }
+
 }

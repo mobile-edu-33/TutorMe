@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mobileedu33.tutorme.data.FireStoreHelper;
+import com.mobileedu33.tutorme.data.models.CurrentUserType;
 import com.mobileedu33.tutorme.data.models.StudentProfile;
 import com.mobileedu33.tutorme.data.models.TutorProfile;
 import com.mobileedu33.tutorme.data.models.UserType;
@@ -85,18 +86,24 @@ public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
     }
 
     private void handleCreateTutorSuccess(TutorProfile tutorProfile) {
+        CurrentUserType currentUserType = new CurrentUserType();
+        currentUserType.setUserType(0);
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(tutorProfile);
+        realm.copyToRealmOrUpdate(currentUserType);
         realm.commitTransaction();
         realm.close();
         notifySuccess(null);
     }
 
     private void handleCreateStudentSuccess(StudentProfile studentProfile) {
+        CurrentUserType currentUserType = new CurrentUserType();
+        currentUserType.setUserType(1);
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(studentProfile);
+        realm.copyToRealmOrUpdate(currentUserType);
         realm.commitTransaction();
         realm.close();
         notifySuccess(null);
