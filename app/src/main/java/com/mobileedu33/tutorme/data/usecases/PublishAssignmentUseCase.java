@@ -1,7 +1,9 @@
-package com.mobileedu33.tutorme.data;
+package com.mobileedu33.tutorme.data.usecases;
 
 import android.util.Log;
 
+import com.mobileedu33.tutorme.data.FireStoreHelper;
+import com.mobileedu33.tutorme.data.FirebaseStorageHelper;
 import com.mobileedu33.tutorme.data.models.Assignment;
 import com.mobileedu33.tutorme.data.models.TutorProfile;
 import com.techyourchance.threadposter.BackgroundThreadPoster;
@@ -88,7 +90,15 @@ public class PublishAssignmentUseCase extends BaseUseCase<Void, String> {
         defaultInstance.close();
     }
 
-    static class UploadAssignmentResult {
+    public static class UploadAssignmentResult {
+        public void setAttachmentUrl(String attachmentUrl) {
+            this.attachmentUrl = attachmentUrl;
+        }
+
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
+
         String attachmentUrl;
         String imageUrl;
     }

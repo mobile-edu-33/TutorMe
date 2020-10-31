@@ -12,13 +12,14 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.mobileedu33.tutorme.R;
 import com.mobileedu33.tutorme.ui.activities.BaseActivity;
-import com.mobileedu33.tutorme.ui.activities.MainActivity;
+import com.mobileedu33.tutorme.ui.activities.Common.DashboardActivity;
 import com.mobileedu33.tutorme.ui.viewmodels.LoginViewModel;
 import com.mobileedu33.tutorme.utils.SignInUtils;
 
@@ -28,10 +29,9 @@ import butterknife.OnClick;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class WelcomeScreenFragment extends Fragment implements SignInUtils.SignInResultListener {
-
-    private static final String TAG = WelcomeScreenFragment.class.getSimpleName();
-    @BindView(R.id.progressBar)
+public class SignUpFragment extends Fragment implements SignInUtils.SignInResultListener {
+    private static final String TAG = SignUpFragment.class.getSimpleName();
+    @BindView(R.id.progressBar2)
     ProgressBar progressBar;
     private LoginViewModel loginViewModel;
     private BaseActivity baseActivity;
@@ -53,14 +53,9 @@ public class WelcomeScreenFragment extends Fragment implements SignInUtils.SignI
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_welcome_screen, container, false);
+        View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
         ButterKnife.bind(this, view);
         return view;
-    }
-
-    @OnClick(R.id.btn_next)
-    public void onNextClick() {
-        SignInUtils.signIn(this);
     }
 
     @Override
@@ -75,6 +70,21 @@ public class WelcomeScreenFragment extends Fragment implements SignInUtils.SignI
         if (response.isNewUser()) {
             baseActivity.showMessageSnackBar(R.string.account_created_successfully, null, null);
             createProfile();
+        }else {
+            loginViewModel.fetchUserProfile()
+                    .observe(this, this::handleFetchProfileResult);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void handleFetchProfileResult(Boolean isSuccess) {
+        progressBar.setVisibility(View.INVISIBLE);
+        if (isSuccess) {
+            Intent intent = new Intent(requireContext(), DashboardActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
+        } else {
+            baseActivity.showMessageSnackBar("Error signing in. Try again.", null, null);
         }
     }
 
@@ -103,7 +113,7 @@ public class WelcomeScreenFragment extends Fragment implements SignInUtils.SignI
     private void handleCreateProfileResponse(boolean isSuccess) {
         progressBar.setVisibility(View.INVISIBLE);
         if (isSuccess) {
-            Intent intent = new Intent(requireContext(), MainActivity.class);
+            Intent intent = new Intent(requireContext(), DashboardActivity.class);
             startActivity(intent);
             requireActivity().finish();
         } else {
@@ -118,5 +128,10 @@ public class WelcomeScreenFragment extends Fragment implements SignInUtils.SignI
     public void onPause() {
         super.onPause();
         loginViewModel.removeLiveDataObservers(this);
+    }
+
+    @OnClick(R.id.btnSignUp)
+    public void onSignUp() {
+        SignInUtils.signIn(this);
     }
 }

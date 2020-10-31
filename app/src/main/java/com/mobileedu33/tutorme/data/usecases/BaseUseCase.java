@@ -1,4 +1,4 @@
-package com.mobileedu33.tutorme.data;
+package com.mobileedu33.tutorme.data.usecases;
 
 import com.techyourchance.threadposter.BackgroundThreadPoster;
 import com.techyourchance.threadposter.UiThreadPoster;

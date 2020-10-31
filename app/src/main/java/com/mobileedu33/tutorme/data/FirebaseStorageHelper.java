@@ -8,7 +8,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.mobileedu33.tutorme.data.PublishAssignmentUseCase.UploadAssignmentResult;
+import com.mobileedu33.tutorme.data.usecases.PublishAssignmentUseCase.UploadAssignmentResult;
 import com.mobileedu33.tutorme.data.models.Assignment;
 import com.mobileedu33.tutorme.data.models.Lesson;
 import com.mobileedu33.tutorme.data.models.LiveLesson;
@@ -89,13 +89,13 @@ public class FirebaseStorageHelper {
         if (attachmentTask != null && attachmentTask.isSuccessful()) {
             Task<Uri> downloadUrl = attachmentTask.getResult().getStorage().getDownloadUrl();
             Tasks.await(downloadUrl);
-            if(downloadUrl.isSuccessful()) result.attachmentUrl = downloadUrl.getResult().toString();
+            if(downloadUrl.isSuccessful()) result.setAttachmentUrl(downloadUrl.getResult().toString());
         }
 
         if (bannerImageTask != null && bannerImageTask.isSuccessful()) {
             Task<Uri> downloadUrl = bannerImageTask.getResult().getStorage().getDownloadUrl();
             Tasks.await(downloadUrl);
-            if(downloadUrl.isSuccessful()) result.imageUrl = downloadUrl.getResult().toString();
+            if(downloadUrl.isSuccessful()) result.setImageUrl(downloadUrl.getResult().toString());
         }
         return result;
     }

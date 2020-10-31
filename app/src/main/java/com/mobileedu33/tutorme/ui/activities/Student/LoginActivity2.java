@@ -36,7 +36,7 @@ public class LoginActivity2 extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);*/
 
-        Button studentSign = findViewById(R.id.std_signup_screen);
+        Button studentSign = findViewById(R.id.btnSignUp);
 
         studentSign.setOnClickListener(new View.OnClickListener() {
             @Override

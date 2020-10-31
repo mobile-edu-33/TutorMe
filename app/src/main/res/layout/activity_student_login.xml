@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/backgroundColor"
-    tools:context="ui.activites.Student.LoginActivity">
+    android:background="@color/backgroundColor">
 
     <TextView
         android:id="@+id/welcome_name"
@@ -53,9 +52,11 @@
             android:id="@+id/username"
             android:hint="Username"
             android:transitionName="username_trans"
+            app:boxBackgroundColor="@color/colorWhite"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -97,7 +98,7 @@
             android:transitionName="sign_in"/>
 
         <Button
-            android:id="@+id/std_signup_screen"
+            android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

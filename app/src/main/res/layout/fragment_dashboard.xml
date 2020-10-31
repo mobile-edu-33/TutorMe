@@ -7,7 +7,7 @@ link it to your drawer layout-->
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.Student.StudentDashboard"
+    tools:context=".ui.activities.Common.DashboardActivity"
     android:id="@+id/drawer_layout">
 
     <com.google.android.material.navigation.NavigationView

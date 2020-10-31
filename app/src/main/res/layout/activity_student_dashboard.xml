@@ -7,7 +7,7 @@ link it to your drawer layout-->
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.Student.StudentDashboard"
+    tools:context=".ui.activities.Common.DashboardActivity"
     android:id="@+id/drawer_layout">
 
     <com.google.android.material.navigation.NavigationView
@@ -26,26 +26,7 @@ link it to your drawer layout-->
         android:orientation="vertical"
         android:background="@color/home_background">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20dp">
-
-            <ImageView
-                android:id="@+id/menu_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/menu_icon"
-                android:layout_centerVertical="true"/>
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/add_notes_icon"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:padding="5dp" />
-        </RelativeLayout>
+        <include layout="@layout/app_bar_main" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -60,14 +41,6 @@ link it to your drawer layout-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/app_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tutorme"
-                        android:textSize="24sp"
-                        android:layout_centerHorizontal="true"/>
 
                     <!-- Creates the search bar -->
                     <RelativeLayout
@@ -223,24 +196,27 @@ link it to your drawer layout-->
                         android:id="@+id/view_lessons_layout"
                         android:layout_width="170dp"
                         android:layout_height="280dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="21dp"
+                        android:layout_marginBottom="20dp"
                         android:background="@color/banner_background"
-                        android:layout_margin="20dp"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="View Lessons"
-                            android:textSize="30sp"
+                            android:layout_marginLeft="20dp"
                             android:layout_marginTop="50dp"
+                            android:text="View Lessons"
                             android:textAllCaps="true"
-                            android:layout_marginLeft="20dp"/>
+                            android:textSize="30sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Browse through lessons from all grades"
-                            android:layout_margin="10dp"/>
+                            android:layout_margin="10dp"
+                            android:text="Browse through lessons from all grades" />
 
                     </LinearLayout>
 
@@ -248,6 +224,8 @@ link it to your drawer layout-->
                         android:id="@+id/view_lessons_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_toEndOf="@+id/view_lessons_layout"
                         android:layout_toRightOf="@id/view_lessons_layout"
                         android:background="@color/home_background" />
 
@@ -289,10 +267,11 @@ link it to your drawer layout-->
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layoutTeachers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginTop="30dp"
+                    android:orientation="vertical"
                     android:padding="20dp">
 
                     <RelativeLayout
@@ -302,18 +281,18 @@ link it to your drawer layout-->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Teachers"
-                            android:textSize="20sp"
-                            android:textColor="@color/buttonsColor"
                             android:fontFamily="sans-serif-condensed"
-                            android:textAllCaps="true"/>
+                            android:text="Teachers"
+                            android:textAllCaps="true"
+                            android:textColor="@color/buttonsColor"
+                            android:textSize="20sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="View All"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"/>
+                            android:layout_centerVertical="true"
+                            android:text="View All" />
                     </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView

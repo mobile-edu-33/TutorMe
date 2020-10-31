@@ -5,7 +5,7 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
 @RealmClass
-public class TutorProfile implements RealmModel {
+public class TutorProfile implements RealmModel, UserProfile {
     @PrimaryKey
     private String PRIMARY_KEY = StudentProfile.class.getSimpleName();
     private String id;

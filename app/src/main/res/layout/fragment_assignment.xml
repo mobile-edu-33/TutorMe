@@ -8,38 +8,6 @@
     android:orientation="vertical"
     android:background="@color/home_background">
 
-   <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
-
-
-       <androidx.appcompat.widget.Toolbar
-           android:id="@+id/top_toolbar"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:background="@color/colorPrimaryDark"
-           android:layout_alignParentTop="true">
-
-
-           <ImageView
-               android:id="@+id/top_back_icon"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:src="@drawable/back_icon" />
-
-       </androidx.appcompat.widget.Toolbar>
-
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="Add Assignments"
-           android:textColor="@color/colorWhite"
-           android:textSize="20sp"
-           android:layout_centerVertical="true"
-           android:layout_centerHorizontal="true"/>
-
-   </RelativeLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"

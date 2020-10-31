@@ -1,4 +1,4 @@
-package com.mobileedu33.tutorme.ui.activities.Student;
+package com.mobileedu33.tutorme.ui.activities.Common;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,75 +6,147 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.bumptech.glide.Glide;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.mobileedu33.tutorme.R;
+import com.mobileedu33.tutorme.data.models.StudentProfile;
+import com.mobileedu33.tutorme.data.models.TutorProfile;
+import com.mobileedu33.tutorme.data.models.UserProfile;
+import com.mobileedu33.tutorme.data.models.UserType;
 import com.mobileedu33.tutorme.ui.HelperClasses.SubjectClasses.SubjectHelperClass;
 import com.mobileedu33.tutorme.ui.HelperClasses.SubjectClasses.SubjectListAdapter;
 import com.mobileedu33.tutorme.ui.HelperClasses.TutorDisplayClass.TutorDisplayAdapter;
 import com.mobileedu33.tutorme.ui.HelperClasses.TutorDisplayClass.TutorDisplayHelper;
 import com.mobileedu33.tutorme.ui.HelperClasses.ViewLessonClasses.ViewLessonAdapter;
 import com.mobileedu33.tutorme.ui.HelperClasses.ViewLessonClasses.ViewLessonsHelper;
-import com.mobileedu33.tutorme.ui.activities.Common.AllSubjects;
+import com.mobileedu33.tutorme.ui.activities.BaseActivity;
+import com.mobileedu33.tutorme.ui.activities.LoginActivity;
 import com.mobileedu33.tutorme.ui.fragments.AssignmentFragment;
 import com.mobileedu33.tutorme.ui.fragments.DashboardFragment;
 import com.mobileedu33.tutorme.ui.fragments.LessonsFragment;
 import com.mobileedu33.tutorme.ui.fragments.ProfileFragment;
+import com.mobileedu33.tutorme.ui.viewmodels.DashboardActivityViewModel;
 
 import java.util.ArrayList;
 
-public class StudentDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import dagger.hilt.android.AndroidEntryPoint;
+import io.realm.Realm;
+
+@AndroidEntryPoint
+public class DashboardActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     // Creating a RecyclerView object
-    RecyclerView mViewLessonRecycler, mTutorDisplayRecyclerView;
-    RecyclerView.Adapter adapter;
-    LinearLayout contentView;
-    ChipNavigationBar chipNavigationBar;
+    private RecyclerView mViewLessonRecycler, mTutorDisplayRecyclerView;
+    private SubjectListAdapter subjectListAdapter;
+    private TutorDisplayAdapter tutorDisplayAdapter;
+    private ViewLessonAdapter viewLessonAdapter;
+    private LinearLayout contentView;
+    private ChipNavigationBar chipNavigationBar;
+    private ImageView profilePhoto;
+    private TextView userName;
+    private TextView userEmail;
 
     static final float END_SCALE = 0.7f;
 
     // Drawer menu
     DrawerLayout drawerLayout;
     NavigationView navigationView;
-    ImageView drawerMenuIcon;
+    private DashboardActivityViewModel dashboardActivityViewModel;
+    private LinearLayout teachersLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_dashboard);
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+        androidx.appcompat.app.ActionBar supportActionBar = getSupportActionBar();
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setHomeButtonEnabled(true);
+        supportActionBar.setHomeAsUpIndicator(R.drawable.menu_icon);
+
+        // Initialize viewmodel
+        dashboardActivityViewModel = new ViewModelProvider(this)
+                .get(DashboardActivityViewModel.class);
+        getLifecycle().addObserver(dashboardActivityViewModel);
 
         // Getting a reference to the recycler view and its ID
         mViewLessonRecycler = findViewById(R.id.view_lessons_recycler);
         mTutorDisplayRecyclerView = findViewById(R.id.tutor_display_recycler);
         // Get a reference to the drawer menu icon
-        drawerMenuIcon = findViewById(R.id.menu_icon);
         contentView = findViewById(R.id.contentView);
-
-        // Menu hooks
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
-
+        View headerView = navigationView.getHeaderView(0);
+        teachersLayout = findViewById(R.id.layoutTeachers);
+        profilePhoto = headerView.findViewById(R.id.user_profile_pic);
+        userEmail = headerView.findViewById(R.id.user_email);
+        userName = headerView.findViewById(R.id.user_username);
+        // Menu hooks
         navigationDrawer();
 
         // Calling the Recycler view functions
-        viewLessonRecycler();
-        subjectsRecyclerView();
-        tutorDisplayRecycler();
+        setupLessonsRecyclerView();
+        setSubjectsRecyclerView();
 
+        dashboardActivityViewModel.getUserProfile();
+        if (dashboardActivityViewModel.getUserType() == UserType.STUDENT) {
+            setupStudentsDashboard();
+        } else {
+            setupTutorDashboard();
+        }
         // Gets a reference to the ChipNavigation Bar
         chipNavigationBar = findViewById(R.id.bottom_nav_menu);
         // Handles the methods of the ChipNavigation bar
         bottomMenu();
+    }
+
+    private void setupTutorDashboard() {
+        teachersLayout.setVisibility(View.GONE);
+    }
+
+    private void setupStudentsDashboard() {
+        tutorDisplayRecycler();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UserProfile userProfile = dashboardActivityViewModel.getUserProfile();
+        if (userProfile.getPhotoUrl() != null) {
+            Glide.with(this)
+                    .load(userProfile.getPhotoUrl())
+                    .placeholder(R.drawable.avtar)
+                    .into(profilePhoto);
+        }
+        userName.setText(userProfile.getDisplayName());
+        userEmail.setText(userProfile.getEmail());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        getLifecycle().removeObserver(dashboardActivityViewModel);
+        dashboardActivityViewModel.removeLiveDataObservers(this);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        handleDrawerVisibility();
+        return super.onSupportNavigateUp();
     }
 
     private void bottomMenu() {
@@ -118,21 +190,18 @@ public class StudentDashboard extends AppCompatActivity implements NavigationVie
         navigationView.setCheckedItem(R.id.nav_home);
 
         /*This code runs when a user clicks on the drawer menu icon*/
-        drawerMenuIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Checks if the drawer is open and if true then close it
-                if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                }
-                else {
-                    drawerLayout.openDrawer(GravityCompat.START);
-                }
-            }
-        });
 
         // Calling the animation function
         animateNavigationDrawer();
+    }
+
+    private void handleDrawerVisibility() {
+        if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else {
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
     }
 
     // This functions creates an animation for the drawer layout when the user opens and closes it
@@ -190,13 +259,34 @@ public class StudentDashboard extends AppCompatActivity implements NavigationVie
             case R.id.nav_subjects:
                 startActivity(new Intent(getApplicationContext(), AllSubjects.class));
                 break;
+            case R.id.nav_logout:
+                logout();
+                break;
         }
 
         return true;
     }
 
+    private void logout() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnSuccessListener(aVoid -> {
+                    Realm defaultInstance = Realm.getDefaultInstance();
+                    defaultInstance.beginTransaction();
+                    defaultInstance.delete(TutorProfile.class);
+                    defaultInstance.delete(StudentProfile.class);
+                    defaultInstance.commitTransaction();
+                    Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+                    intent.setAction("login");
+                    startActivity(intent);
+                    finish();
+                }).addOnFailureListener(e -> {
+            showMessageSnackBar("An error loging out. Try again", null, null);
+                });
+    }
+
     // Recycler views functions
-    private void viewLessonRecycler() {
+    private void setupLessonsRecyclerView() {
         // Loads only the views which are visible to the user
         mViewLessonRecycler.setHasFixedSize(true);
         // Sets the layout of the recycler view and its orientation, by default it is vertical
@@ -213,11 +303,11 @@ public class StudentDashboard extends AppCompatActivity implements NavigationVie
         viewLessonsArrayList.add(new ViewLessonsHelper(R.drawable.english_video, "Julius Ceasar", description));
         viewLessonsArrayList.add(new ViewLessonsHelper(R.drawable.watching_youtube, "Arts & Cultures", description));
 
-        adapter = new ViewLessonAdapter(viewLessonsArrayList);
-        mViewLessonRecycler.setAdapter(adapter);
+        viewLessonAdapter = new ViewLessonAdapter(viewLessonsArrayList);
+        mViewLessonRecycler.setAdapter(viewLessonAdapter);
     }
 
-    private void subjectsRecyclerView() {
+    private void setSubjectsRecyclerView() {
         RecyclerView subjectRecycler = findViewById(R.id.view_subjects_rv);
 
         subjectRecycler.setHasFixedSize(true);
@@ -232,8 +322,8 @@ public class StudentDashboard extends AppCompatActivity implements NavigationVie
         subjectHelper.add(new SubjectHelperClass(R.drawable.physics_subject, "Physics", "180 Lessons"));
         subjectHelper.add(new SubjectHelperClass(R.drawable.science_subject, "Science", "190 Lessons"));
 
-        adapter = new SubjectListAdapter(subjectHelper);
-        subjectRecycler.setAdapter(adapter);
+        subjectListAdapter = new SubjectListAdapter(subjectHelper);
+        subjectRecycler.setAdapter(subjectListAdapter);
     }
 
     private void tutorDisplayRecycler() {
@@ -247,7 +337,7 @@ public class StudentDashboard extends AppCompatActivity implements NavigationVie
         tutorDisplayArr.add(new TutorDisplayHelper(R.drawable.tutor_image, "Miss Olivia Gonvender", "12 km away", "230 lessons"));
         tutorDisplayArr.add(new TutorDisplayHelper(R.drawable.tutor_image, "Miss Olivia Gonvender", "10 km away", "230 lessons"));
 
-        adapter = new TutorDisplayAdapter(tutorDisplayArr);
-        mTutorDisplayRecyclerView.setAdapter(adapter);
+        tutorDisplayAdapter = new TutorDisplayAdapter(tutorDisplayArr);
+        mTutorDisplayRecyclerView.setAdapter(tutorDisplayAdapter);
     }
 }

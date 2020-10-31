@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,26 +16,35 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.mobileedu33.tutorme.R;
 import com.mobileedu33.tutorme.ui.HelperClasses.SliderAdapter;
+import com.mobileedu33.tutorme.ui.activities.LoginActivity;
+import com.mobileedu33.tutorme.utils.HideActionBarUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class OnBoardingActivity extends AppCompatActivity {
 
+    @BindView(R.id.slider)
     ViewPager viewPager;
+    @BindView(R.id.dots)
     LinearLayout layoutDots;
     SliderAdapter sliderAdapter;
     TextView[] dots;
+    @BindView(R.id.get_started_btn)
     Button letsGetStarted;
     Animation animation;
     int currentPosition;
+    @BindView(R.id.relativeLayout)
+    RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        HideActionBarUtil.hideActionBar(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_boarding);
 
-        // Views references
-        viewPager = findViewById(R.id.slider);
-        layoutDots = findViewById(R.id.dots);
-        letsGetStarted = findViewById(R.id.get_started_btn);
+        ButterKnife.bind(this);
 
         // Calling the SliderAdapter class
         sliderAdapter = new SliderAdapter(this);
@@ -46,9 +56,7 @@ public class OnBoardingActivity extends AppCompatActivity {
 
     /* Skips the walkthrough screens and redirects the user to the sign up screen*/
     public void skip(View view) {
-        startActivity(new Intent(this, ChooseCategoryActivity.class));
-        // Destroys the activity
-        finish();
+        openLogin();
     }
 
     public void next(View view) {
@@ -108,4 +116,16 @@ public class OnBoardingActivity extends AppCompatActivity {
 
         }
     };
+
+    @OnClick(R.id.get_started_btn)
+    public void onClick() {
+        openLogin();
+    }
+
+    private void openLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setAction("signup");
+        startActivity(intent);
+        finish();
+    }
 }

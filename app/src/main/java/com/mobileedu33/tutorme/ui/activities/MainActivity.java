@@ -23,6 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.button)
     public void onClick() {
-        startActivity(new Intent(this, CreateAssignmentActivity.class));
+        startActivity(new Intent(this, CreateAssignmentFragment.class));
     }
 }

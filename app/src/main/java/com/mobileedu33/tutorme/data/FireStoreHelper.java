@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mobileedu33.tutorme.data.dtos.GetProfileResult;
 import com.mobileedu33.tutorme.data.models.Assignment;
 import com.mobileedu33.tutorme.data.models.Lesson;
 import com.mobileedu33.tutorme.data.models.LiveLesson;
@@ -126,6 +127,27 @@ public class FireStoreHelper {
         return task.isSuccessful();
     }
 
+    public GetProfileResult getUserProfile(String userId) throws ExecutionException, InterruptedException {
+        Task<DocumentSnapshot> getTutorProfileTask = firebaseFirestore.collection(TUTORS)
+                .document(userId).get();
+        Task<DocumentSnapshot> getStudentProfileTask = firebaseFirestore.collection(STUDENTS)
+                .document(userId).get();
+        Task<List<Task<?>>> listTasks = Tasks.whenAllComplete(getStudentProfileTask, getTutorProfileTask);
+        Tasks.await(listTasks);
+        GetProfileResult getProfileResult = new GetProfileResult()
+                ;
+        if (getStudentProfileTask.isSuccessful()) {
+            DocumentSnapshot documentSnapshot = getStudentProfileTask.getResult();
+            if(documentSnapshot != null) getProfileResult.setStudentProfile(documentSnapshot.toObject(StudentProfile.class));
+        }
+
+        if (getTutorProfileTask.isSuccessful()) {
+            DocumentSnapshot documentSnapshot = getTutorProfileTask.getResult();
+            if(documentSnapshot != null) getProfileResult.setTutorProfile(documentSnapshot.toObject(TutorProfile.class));
+        }
+        return getProfileResult;
+    }
+
     public boolean saveTutorProfile(TutorProfile tutorProfile, String userId) throws ExecutionException, InterruptedException {
         Task<Void> task = firebaseFirestore.collection(TUTORS)
                 .document(userId)
@@ -215,5 +237,4 @@ public class FireStoreHelper {
                     }
                 });
     }
-
 }

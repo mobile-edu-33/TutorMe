@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel;
 public abstract class BaseViewModel extends ViewModel implements LifecycleObserver {
     protected final MutableLiveData<String> messagesLiveData = new MutableLiveData<>();
 
-    protected LiveData<String> getMessagesLiveData() {
+    public LiveData<String> getMessagesLiveData() {
         return messagesLiveData;
     }
 

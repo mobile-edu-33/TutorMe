@@ -12,11 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.CreateAssignmentActivity"></activity>
+        <activity android:name=".ui.activities.CreateAssignmentFragment"></activity>
         <activity android:name=".ui.activities.LoginActivity"/>
         <activity android:name=".ui.activities.MainActivity" />
         <activity android:name=".ui.activities.Common.AllSubjects"></activity>
-        <activity android:name=".ui.activities.Student.StudentDashboard" />
+        <activity android:name=".ui.activities.Common.DashboardActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
         <activity android:name=".ui.activities.Common.OnBoardingActivity" />
         <activity android:name=".ui.activities.Tutor.TutorRegisterActivity" />
         <activity android:name=".ui.activities.Tutor.TutorLoginActivity" />
@@ -24,7 +25,6 @@
         <activity android:name=".ui.activities.Tutor.TutorSignUpActivity" />
         <activity android:name=".ui.activities.Student.LoginActivity2" />
         <activity android:name=".ui.activities.Student.StudentSignUpActivity" />
-        <activity android:name=".ui.activities.Common.ChooseCategoryActivity" />
         <activity android:name=".ui.activities.Common.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

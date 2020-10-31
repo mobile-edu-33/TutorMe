@@ -7,10 +7,10 @@ import androidx.core.content.ContextCompat;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.google.firebase.FirebaseApp;
-import com.mobileedu33.tutorme.data.BaseUseCase;
+import com.mobileedu33.tutorme.data.usecases.BaseUseCase;
 import com.mobileedu33.tutorme.data.FireStoreHelper;
 import com.mobileedu33.tutorme.data.FirebaseStorageHelper;
-import com.mobileedu33.tutorme.data.PublishAssignmentUseCase;
+import com.mobileedu33.tutorme.data.usecases.PublishAssignmentUseCase;
 import com.mobileedu33.tutorme.data.models.Assignment;
 import com.techyourchance.threadposter.BackgroundThreadPoster;
 import com.techyourchance.threadposter.UiThreadPoster;

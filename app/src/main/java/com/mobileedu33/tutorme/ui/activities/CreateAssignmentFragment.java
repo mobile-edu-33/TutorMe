@@ -19,8 +19,8 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.mobileedu33.tutorme.R;
-import com.mobileedu33.tutorme.data.BaseUseCase;
-import com.mobileedu33.tutorme.data.PublishAssignmentUseCase;
+import com.mobileedu33.tutorme.data.usecases.BaseUseCase;
+import com.mobileedu33.tutorme.data.usecases.PublishAssignmentUseCase;
 import com.mobileedu33.tutorme.data.models.Assignment;
 import com.mobileedu33.tutorme.utils.FilePathUtil;
 
@@ -36,7 +36,7 @@ import butterknife.OnClick;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class CreateAssignmentActivity extends BaseActivity {
+public class CreateAssignmentFragment extends BaseActivity {
 
     public static final int WRITE_STORAGE_REQUEST_CODE = 234;
     @BindView(R.id.editTextTitle)
@@ -141,7 +141,7 @@ public class CreateAssignmentActivity extends BaseActivity {
                     attachment = file;
             }
         } catch (URISyntaxException e) {
-            Log.e(CreateAssignmentActivity.class.getSimpleName(), "Error parsing uri", e);
+            Log.e(CreateAssignmentFragment.class.getSimpleName(), "Error parsing uri", e);
         }
     }
 

@@ -1,10 +1,11 @@
-package com.mobileedu33.tutorme.data;
+package com.mobileedu33.tutorme.data.usecases;
 
 import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mobileedu33.tutorme.data.FireStoreHelper;
 import com.mobileedu33.tutorme.data.models.StudentProfile;
 import com.mobileedu33.tutorme.data.models.TutorProfile;
 import com.mobileedu33.tutorme.data.models.UserType;

@@ -7,32 +7,34 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseAuth;
 import com.mobileedu33.tutorme.R;
 import com.mobileedu33.tutorme.ui.activities.BaseActivity;
-import com.mobileedu33.tutorme.ui.activities.MainActivity;
+import com.mobileedu33.tutorme.ui.activities.Common.DashboardActivity;
 import com.mobileedu33.tutorme.ui.viewmodels.LoginViewModel;
 import com.mobileedu33.tutorme.utils.SignInUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class StartScreenFragment extends Fragment implements SignInUtils.SignInResultListener {
-    private static final String TAG = StartScreenFragment.class.getSimpleName();
-
+public class LogInFragment extends Fragment implements SignInUtils.SignInResultListener {
+    private static final String TAG = LogInFragment.class.getSimpleName();
+    @BindView(R.id.progressBar3)
+    ProgressBar progressBar3;
     private LoginViewModel loginViewModel;
     private BaseActivity baseActivity;
-    private boolean isSigninInProgress;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -51,38 +53,24 @@ public class StartScreenFragment extends Fragment implements SignInUtils.SignInR
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_start_screen, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (!isSigninInProgress) {
-            loginViewModel.isFirstRun()
-                    .observe(this, isFirstRun -> {
-                        if (isFirstRun) {
-                            // Navigate to welcome screen
-                            NavHostFragment.findNavController(this)
-                                    .navigate(R.id.welcomeScreenFragment);
-
-                        } else {
-                            handleNotFirstTimeRun();
-                        }
-                    });
-            isSigninInProgress = true;
-        }
+        loginViewModel.getMessagesLiveData()
+                .observe(this, s -> {
+                    baseActivity.showMessageSnackBar(s, null, null);
+                });
     }
 
-    private void handleNotFirstTimeRun() {
-
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            // User already logged in so let's go to the Main screen
-            startActivity(new Intent(requireContext(), MainActivity.class));
-            requireActivity().finish();
-        } else {
-            SignInUtils.signIn(this);
-        }
+    @Override
+    public void onStop() {
+        loginViewModel.removeLiveDataObservers(this);
+        super.onStop();
     }
 
     @Override
@@ -93,14 +81,19 @@ public class StartScreenFragment extends Fragment implements SignInUtils.SignInR
 
     @Override
     public void onSignInSuccess(IdpResponse response) {
-        if (!response.isNewUser()) {
-            baseActivity.showMessageSnackBar(R.string.welcome_back, null, null);
-        }
-        loginViewModel.setIsFirstRunFalse();
-        Intent intent = new Intent(requireContext(), MainActivity.class);
-        startActivity(intent);
-        requireActivity().finish();
+        progressBar3.setVisibility(View.VISIBLE);
+        loginViewModel.fetchUserProfile()
+                .observe(this, this::handleFetchProfileResult);
+    }
 
+    private void handleFetchProfileResult(Boolean isSuccess) {
+        if (isSuccess) {
+            Intent intent = new Intent(requireContext(), DashboardActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
+        }else {
+            progressBar3.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -123,5 +116,16 @@ public class StartScreenFragment extends Fragment implements SignInUtils.SignInR
     public void onPause() {
         super.onPause();
         loginViewModel.removeLiveDataObservers(this);
+    }
+
+    @OnClick(R.id.btnLogin)
+    public void onLogin() {
+        SignInUtils.signIn(this);
+    }
+
+    @OnClick(R.id.btnSignUp)
+    public void onClick() {
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_logInFragment_to_chooseUserTypeFragment);
     }
 }

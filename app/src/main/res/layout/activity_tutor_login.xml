@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/backgroundMainColor"
-    tools:context=".Student.LoginActivity">
+    tools:context="ui.activities.Student.LoginActivity">
 
     <TextView
         android:id="@+id/app_welcome_name"

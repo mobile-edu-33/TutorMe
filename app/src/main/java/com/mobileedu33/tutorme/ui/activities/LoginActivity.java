@@ -9,9 +9,12 @@ import android.view.WindowManager;
 
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.mobileedu33.tutorme.R;
 import com.mobileedu33.tutorme.ui.viewmodels.LoginViewModel;
+import com.mobileedu33.tutorme.utils.HideActionBarUtil;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -19,14 +22,22 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class LoginActivity extends BaseActivity {
 
     private LoginViewModel viewModel;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-           hideActionBar();
+//        HideActionBarUtil.hideActionBar(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         viewModel = new ViewModelProvider(this)
                 .get(LoginViewModel.class);
+        navController = Navigation.findNavController(this, R.id.login_navhost_fragment);
+
+        assert getIntent().getAction() != null;
+        if (getIntent().getAction().equalsIgnoreCase("signup")) {
+            navController.getGraph().setStartDestination(R.id.signUpFragment);
+            navController.navigate(R.id.signUpFragment);
+        }
 
     }
 
@@ -41,17 +52,4 @@ public class LoginActivity extends BaseActivity {
         super.onStop();
         getLifecycle().removeObserver(viewModel);
     }
-
-    private void hideActionBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            final WindowInsetsController controller = getWindow().getInsetsController();
-
-            if (controller != null)
-                controller.hide(WindowInsets.Type.navigationBars());
-        }
-        else {
-            getSupportActionBar().hide();
-        }
-    }
-
 }
