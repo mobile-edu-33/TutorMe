@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/assignmentsFragment"
         android:name="com.mobileedu33.tutorme.ui.fragments.AssignmentFragment"
-        android:label="Assignments"
+        android:label="My Assignments"
         tools:layout="@layout/fragment_assignments_list">
 
         <action
@@ -25,16 +25,15 @@
             app:enterAnim="@anim/fui_slide_in_right"
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_fade_enter"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createAssignmentFragment"
         android:name="com.mobileedu33.tutorme.ui.fragments.CreateAssignmentFragment"
-        android:label="activity_create_assignment"
+        android:label="Create New Assignmen"
         tools:layout="@layout/activity_create_assignment" />
     <fragment
         android:id="@+id/assignmentDetailFragment"
         android:name="com.mobileedu33.tutorme.ui.fragments.AssignmentDetailFragment"
-        android:label="fragment_assignment_detail"
         tools:layout="@layout/fragment_assignment_detail" />
 </navigation>
