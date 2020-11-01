@@ -76,7 +76,7 @@ public class FirebaseStorageHelper {
         }
 
         if (bannerImageTask != null && attachmentTask != null) {
-            Task<List<Task<?>>> listTask = Tasks.whenAllComplete(bannerImageTask, attachmentTask);
+            Task<List<Task<?>>> listTask = Tasks.whenAllSuccess(bannerImageTask, attachmentTask);
             Tasks.await(listTask);
         } else if (bannerImageTask != null) {
             Tasks.await(bannerImageTask);

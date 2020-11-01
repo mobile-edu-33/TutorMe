@@ -96,7 +96,10 @@ public class AssignmentFragment extends Fragment implements AssignmentsAdapter.O
 
     @Override
     public void onItemClick(Assignment assignment) {
-
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("assignment", assignment);
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_assignmentsFragment_to_assignmentDetailFragment, bundle);
     }
 
     @OnClick(R.id.btnAddAssignment)

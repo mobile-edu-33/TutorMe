@@ -12,6 +12,7 @@ public abstract class BaseViewModel extends ViewModel implements LifecycleObserv
     protected final MutableLiveData<String> messagesLiveData = new MutableLiveData<>();
 
     public LiveData<String> getMessagesLiveData() {
+        messagesLiveData.setValue("");
         return messagesLiveData;
     }
 

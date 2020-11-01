@@ -29,6 +29,7 @@ public class AssignmentsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignments);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbarMain);
         viewModel = new ViewModelProvider(this)
                 .get(AssignmentsActivityViewModel.class);
         getLifecycle().addObserver(viewModel);

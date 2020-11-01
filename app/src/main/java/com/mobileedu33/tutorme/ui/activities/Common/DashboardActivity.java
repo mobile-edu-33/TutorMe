@@ -127,7 +127,7 @@ public class DashboardActivity extends BaseActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         UserProfile userProfile = dashboardActivityViewModel.getUserProfile();
-        if (userProfile.getPhotoUrl() != null) {
+        if (userProfile != null && userProfile.getPhotoUrl() != null) {
             Glide.with(this)
                     .load(userProfile.getPhotoUrl())
                     .placeholder(R.drawable.avtar)

@@ -22,6 +22,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showMessageSnackBar(String string, String actionTitle, Runnable onActionClicked) {
+        if (string.isEmpty()) return;
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), string, Snackbar.LENGTH_SHORT);
         if(actionTitle != null && onActionClicked != null) {
             snackbar.setDuration(BaseTransientBottomBar.LENGTH_INDEFINITE);
