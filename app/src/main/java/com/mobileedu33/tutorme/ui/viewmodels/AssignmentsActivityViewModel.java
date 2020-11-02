@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mobileedu33.tutorme.data.models.Assignment;
+import com.mobileedu33.tutorme.data.models.CurrentUserType;
+import com.mobileedu33.tutorme.data.models.UserType;
 import com.mobileedu33.tutorme.data.usecases.BaseUseCase.UseCaseListener;
 import com.mobileedu33.tutorme.data.usecases.FetchAssingmentsUseCase;
 import com.mobileedu33.tutorme.data.usecases.PublishAssignmentUseCase;
@@ -19,7 +21,7 @@ import io.realm.RealmResults;
 public class AssignmentsActivityViewModel extends BaseViewModel{
     private final PublishAssignmentUseCase publishAssignmentUseCase;
     private final FetchAssingmentsUseCase fetchAssingmentsUseCase;
-    private final MutableLiveData<Boolean> publishAssignmentLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> publishAssignmentLiveData = new MutableLiveData<>();
     private final Realm realm;
     private final MutableLiveData<List<Assignment>> assignmentsLiveData = new MutableLiveData<>();
 
@@ -31,6 +33,12 @@ public class AssignmentsActivityViewModel extends BaseViewModel{
         realm = Realm.getDefaultInstance();
     }
 
+    public UserType getUserType() {
+        CurrentUserType currentUserType = realm.where(CurrentUserType.class).findFirst();
+        assert currentUserType != null;
+        return currentUserType.getUserType();
+    }
+
     public LiveData<List<Assignment>> getAssignments() {
         fetchAssingmentsUseCase.fetch();
         RealmResults<Assignment> assignmentRealmResults = realm.where(Assignment.class).findAllAsync();
@@ -40,6 +48,7 @@ public class AssignmentsActivityViewModel extends BaseViewModel{
     }
 
     public LiveData<Boolean> publishAssignment(Assignment assignment, File attachment, File image) {
+        publishAssignmentLiveData = new MutableLiveData<>();
         publishAssignmentUseCase.publish(assignment, attachment, image);
         return publishAssignmentLiveData;
     }

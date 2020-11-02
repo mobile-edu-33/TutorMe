@@ -35,8 +35,8 @@ public class LoginActivity extends BaseActivity {
 
         assert getIntent().getAction() != null;
         if (getIntent().getAction().equalsIgnoreCase("signup")) {
-            navController.getGraph().setStartDestination(R.id.signUpFragment);
-            navController.navigate(R.id.signUpFragment);
+            navController.getGraph().setStartDestination(R.id.chooseUserTypeFragment);
+            navController.navigate(R.id.chooseUserTypeFragment);
         }
 
     }

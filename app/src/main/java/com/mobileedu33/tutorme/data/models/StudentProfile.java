@@ -12,7 +12,7 @@ import io.realm.annotations.RealmClass;
 @RealmClass
 public class StudentProfile implements RealmModel, UserProfile {
     @PrimaryKey
-    private static final String PRIMARY_KEY = StudentProfile.class.getSimpleName();
+    private String PRIMARY_KEY = StudentProfile.class.getSimpleName();
     private String id;
     private String displayName;
     private String email;

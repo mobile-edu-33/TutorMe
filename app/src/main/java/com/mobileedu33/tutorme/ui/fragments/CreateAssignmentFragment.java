@@ -54,8 +54,8 @@ public class CreateAssignmentFragment extends Fragment {
     EditText editTextTitle;
     @BindView(R.id.editTextDescription)
     EditText editTextDescription;
-    @BindView(R.id.textView2)
-    TextView textView2;
+    @BindView(R.id.txtAttachment)
+    TextView txtAttachment;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -156,6 +156,16 @@ public class CreateAssignmentFragment extends Fragment {
 
     @OnClick(R.id.btn_publishAssignment)
     public void onPublish() {
+        String title = editTextTitle.getText().toString();
+        String description = editTextDescription.getText().toString();
+
+        if (title.isEmpty()) {
+            baseActivity.showMessageSnackBar("Title cannot be empty. Please add a title!", null, null);
+            return;
+        } else if (description.isEmpty()) {
+            baseActivity.showMessageSnackBar("Description cannot be empty. Please add description!", null, null);
+            return;
+        }
         assignment.setTitle(editTextTitle.getText().toString());
         assignment.setDescription(editTextDescription.getText().toString());
         viewModel.publishAssignment(assignment, attachment, image)
@@ -177,14 +187,14 @@ public class CreateAssignmentFragment extends Fragment {
         if (resultCode == RESULT_OK && data != null) {
             Uri fileUri = data.getData();
             if (fileUri != null) {
-                textView2.setText(fileUri.getLastPathSegment());
                 handleChooseFileResponse(requestCode, fileUri);
             }
         }
     }
 
     private void handleChooseFileResponse(int requestCode, Uri uri) {
-        File cache = new File(requireContext().getCacheDir(), FileUtils.getFileName(uri));
+        String fileName =  FileUtils.getFileName(uri);
+        File cache = new File(requireContext().getCacheDir(), fileName);
 
         try {
             ParcelFileDescriptor r = requireContext().getContentResolver().openFileDescriptor(uri, "r", null);
@@ -205,6 +215,9 @@ public class CreateAssignmentFragment extends Fragment {
                         .into(imageViewHeaderImage);
                 break;
             case PICK_ATTACHMENT_FILE:
+                String displayName = FileUtils.getFileDisplayName(uri, requireContext());
+                displayName = displayName.isEmpty() ? "Attachment 1" : displayName;
+                txtAttachment.setText(displayName);
                 attachment = cache;
         }
     }

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mobileedu33.tutorme.data.usecases.BaseUseCase.UseCaseListener;
 import com.mobileedu33.tutorme.data.SharedPreferencesRepository;
 import com.mobileedu33.tutorme.data.usecases.CreateUserProfileUseCase;
@@ -56,6 +57,7 @@ public class LoginViewModel extends BaseViewModel {
 
         @Override
         public void onError(Void aVoid) {
+            FirebaseAuth.getInstance().signOut();
             messagesLiveData.postValue("An error occurred!");
             createProfileLiveData.postValue(false);
         }

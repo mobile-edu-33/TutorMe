@@ -58,19 +58,16 @@ public class PublishAssignmentUseCase extends BaseUseCase<Void, String> {
             notifyError("Error saving attachment");
             return;
         }
-        notifySuccess(null);
-        executeInBackground(() -> {
-            currentAssignment.setAttachmentsUrl(result.attachmentUrl);
-            currentAssignment.setImageUrl(result.imageUrl);
-            try {
-                boolean isSuccess = fireStoreHelper.publishAssignment(currentAssignment, false);
-                handlePublishResult(isSuccess);
-            } catch (Exception e) {
-                Log.e(TAG, "Error saving data", e);
-                notifyError("Error saving assignment. Try again.");
-            }
 
-        });
+        currentAssignment.setAttachmentsUrl(result.attachmentUrl);
+        currentAssignment.setImageUrl(result.imageUrl);
+        try {
+            boolean isSuccess = fireStoreHelper.publishAssignment(currentAssignment, false);
+            handlePublishResult(isSuccess);
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving data", e);
+            notifyError("Error saving assignment. Try again.");
+        }
     }
 
     private void handlePublishResult(boolean isSuccessful) {

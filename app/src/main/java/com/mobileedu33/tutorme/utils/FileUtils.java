@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -65,6 +66,16 @@ public class FileUtils {
             fileName = path.substring(cut + 1);
         }
         return fileName;
+    }
+
+    public static String getFileDisplayName(Uri uri, Context context) {
+        ContentResolver contentResolver = context.getContentResolver();
+        Cursor cursor = contentResolver.query(uri, null, null, null, null);
+        if (cursor != null) {
+            int columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            cursor.moveToFirst();
+            return cursor.getString(columnIndex);
+        } else return "";
     }
 
     public static void copy(Context context, Uri srcUri, File dstFile) {

@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mobileedu33.tutorme.R;
 import com.mobileedu33.tutorme.data.models.Assignment;
+import com.mobileedu33.tutorme.data.models.UserType;
 import com.mobileedu33.tutorme.ui.activities.BaseActivity;
 import com.mobileedu33.tutorme.ui.adapters.AssignmentsAdapter;
 import com.mobileedu33.tutorme.ui.viewmodels.AssignmentsActivityViewModel;
@@ -38,6 +40,8 @@ public class AssignmentFragment extends Fragment implements AssignmentsAdapter.O
     @BindView(R.id.txtNothingToShow)
     TextView txtNothingToShow;
     AssignmentsAdapter assignmentsAdapter;
+    @BindView(R.id.btnAddAssignment)
+    FloatingActionButton btnAddAssignment;
     private AssignmentsActivityViewModel viewModel;
     private BaseActivity baseActivity;
 
@@ -70,6 +74,10 @@ public class AssignmentFragment extends Fragment implements AssignmentsAdapter.O
         rvAssignments.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
         rvAssignments.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
         rvAssignments.setAdapter(assignmentsAdapter);
+        UserType userType = viewModel.getUserType();
+        if (userType == UserType.STUDENT) {
+            btnAddAssignment.setVisibility(View.GONE);
+        }
     }
 
     @Override

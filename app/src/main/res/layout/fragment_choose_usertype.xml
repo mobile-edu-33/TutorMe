@@ -8,17 +8,16 @@
     tools:context=".ui.fragments.ChooseUserTypeFragment">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtAttachment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Choose Yourself"
-        android:textAlignment="center"
         android:fontFamily="sans-serif-condensed"
+        android:text="Choose user type:"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/colorWhite"
         android:textFontWeight="@android:integer/config_longAnimTime"
-        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +31,7 @@
         android:src="@drawable/studentavatar"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/txtAttachment" />
 
     <TextView
         android:id="@+id/textView13"
@@ -57,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/txtAttachment" />
 
     <TextView
         android:id="@+id/textView14"
@@ -79,7 +78,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="60dp"
         android:background="@color/buttonsColor"
-        android:text="Cancel"
+        android:text="NEXT"
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +93,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:checked="false"
-        android:onClick="onRadioButtonClicked"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintHorizontal_bias="0.486"
@@ -108,7 +106,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
-        android:onClick="onRadioButtonClicked"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.661"
