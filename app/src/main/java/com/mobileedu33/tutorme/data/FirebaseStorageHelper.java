@@ -27,7 +27,7 @@ public class FirebaseStorageHelper {
     public static final String PROFILE_IMAGES = "profile-images";
     public static final String JPG = ".jpg";
     public static final String ASSIGNMENTS_ATTACHMENTS = "assignments-attachments";
-    public static final String LESSONS_BANNER_IMAGES = "lessons-banner-images";
+    public static final String LESSONS_IMAGES = "lessons-banner-images";
     private final StorageReference storageReference;
     private final ExecutorService executorService;
 
@@ -100,9 +100,17 @@ public class FirebaseStorageHelper {
         return result;
     }
 
+    public boolean deleteFile(String parentFolder, String path) throws ExecutionException, InterruptedException {
+        StorageReference folderRef = this.storageReference.child(parentFolder)
+                .child(path);
+        Task<Void> deleteTask = folderRef.delete();
+        Tasks.await(deleteTask);
+        return deleteTask.isSuccessful();
+    }
+
     public String saveLessonImage(Lesson lesson, File file) throws ExecutionException, InterruptedException {
         Uri uri = Uri.fromFile(file);
-        StorageReference storageReference = this.storageReference.child(LESSONS_BANNER_IMAGES)
+        StorageReference storageReference = this.storageReference.child(LESSONS_IMAGES)
                 .child(lesson.getId().concat("/"))
                 .child(Objects.requireNonNull(uri.getLastPathSegment()));
         UploadTask uploadTask = storageReference.putFile(uri);
@@ -113,7 +121,7 @@ public class FirebaseStorageHelper {
 
     public String saveLessonImage(LiveLesson lesson, File file) throws ExecutionException, InterruptedException {
         Uri uri = Uri.fromFile(file);
-        StorageReference storageReference = this.storageReference.child(LESSONS_BANNER_IMAGES)
+        StorageReference storageReference = this.storageReference.child(LESSONS_IMAGES)
                 .child(lesson.getId().concat("/"))
                 .child(Objects.requireNonNull(uri.getLastPathSegment()));
         UploadTask uploadTask = storageReference.putFile(uri);

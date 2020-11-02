@@ -15,6 +15,7 @@ import com.mobileedu33.tutorme.data.models.StudentProfile;
 import com.mobileedu33.tutorme.data.models.TutorProfile;
 import com.mobileedu33.tutorme.data.models.TutorRequest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -40,7 +41,10 @@ public class FireStoreHelper {
                 .whereIn("creatorId", creatorIds)
                 .get();
         Tasks.await(snapshotTask);
-        return Objects.requireNonNull(snapshotTask.getResult()).toObjects(Assignment.class);
+        if (snapshotTask.isSuccessful() && snapshotTask.getResult() != null) {
+            return snapshotTask.getResult().toObjects(Assignment.class);
+        }
+        return Collections.emptyList();
     }
 
     public boolean publishAssignment(Assignment assignment, boolean isUpdate) throws ExecutionException, InterruptedException {
@@ -61,9 +65,9 @@ public class FireStoreHelper {
         } else return false;
     }
 
-    public boolean deleteAssignment(Assignment assignment) throws ExecutionException, InterruptedException {
+    public boolean deleteAssignment(String id) throws ExecutionException, InterruptedException {
         Task<Void> task = firebaseFirestore.collection(ASSIGNMENTS_ALL)
-                .document(assignment.getRefId())
+                .document(id)
                 .delete();
         Tasks.await(task);
         return task.isSuccessful();
@@ -77,7 +81,7 @@ public class FireStoreHelper {
         return Objects.requireNonNull(querySnapshotTask.getResult()).toObjects(LiveLesson.class);
     }
 
-    public boolean publishScheduledLesson(LiveLesson liveLesson, boolean isUpdate) throws ExecutionException, InterruptedException {
+    public boolean saveScheduledLesson(LiveLesson liveLesson, boolean isUpdate) throws ExecutionException, InterruptedException {
         CollectionReference collection = firebaseFirestore.collection(SCHEDULED_LESSONS);
         DocumentReference documentReference;
         if(isUpdate) documentReference = collection.document(liveLesson.getId());
@@ -148,9 +152,9 @@ public class FireStoreHelper {
         return getProfileResult;
     }
 
-    public boolean saveTutorProfile(TutorProfile tutorProfile, String userId) throws ExecutionException, InterruptedException {
+    public boolean saveTutorProfile(TutorProfile tutorProfile) throws ExecutionException, InterruptedException {
         Task<Void> task = firebaseFirestore.collection(TUTORS)
-                .document(userId)
+                .document(tutorProfile.getId())
                 .set(tutorProfile);
         Tasks.await(task);
         return task.isSuccessful();
@@ -161,7 +165,10 @@ public class FireStoreHelper {
                 .document(userId)
                 .get();
         Tasks.await(documentSnapshotTask);
-        return Objects.requireNonNull(documentSnapshotTask.getResult()).toObject(TutorProfile.class);
+        if (documentSnapshotTask.isSuccessful() && documentSnapshotTask.getResult() != null) {
+            return documentSnapshotTask.getResult().toObject(TutorProfile.class);
+        }
+        return null;
     }
 
     public boolean deleteTutorProfile(TutorProfile profile) throws ExecutionException, InterruptedException {
@@ -172,20 +179,23 @@ public class FireStoreHelper {
         return task.isSuccessful();
     }
 
-    public boolean saveStudentProfile(StudentProfile studentProfile, String userId) throws ExecutionException, InterruptedException {
+    public boolean saveStudentProfile(StudentProfile studentProfile) throws ExecutionException, InterruptedException {
         Task<Void> task = firebaseFirestore.collection(STUDENTS)
-                .document(userId)
+                .document(studentProfile.getId())
                 .set(studentProfile);
         Tasks.await(task);
         return task.isSuccessful();
     }
 
     public StudentProfile getStudentProfile(String userId) throws ExecutionException, InterruptedException {
-        Task<DocumentSnapshot> documentSnapshotTask = firebaseFirestore.collection(TUTORS)
+        Task<DocumentSnapshot> documentSnapshotTask = firebaseFirestore.collection(STUDENTS)
                 .document(userId)
                 .get();
         Tasks.await(documentSnapshotTask);
-        return Objects.requireNonNull(documentSnapshotTask.getResult()).toObject(StudentProfile.class);
+        if (documentSnapshotTask.isSuccessful() && documentSnapshotTask.getResult() != null) {
+            return documentSnapshotTask.getResult().toObject(StudentProfile.class);
+        }
+        return null;
     }
 
     public boolean deleteStudentProfile(StudentProfile profile) throws ExecutionException, InterruptedException {
@@ -196,7 +206,7 @@ public class FireStoreHelper {
         return task.isSuccessful();
     }
 
-    public boolean requestTutor(TutorRequest request) throws ExecutionException, InterruptedException {
+    public boolean saveTutorRequest(TutorRequest request) throws ExecutionException, InterruptedException {
         Task<Void> task = firebaseFirestore.collection(TUTOR_REQUESTS)
                 .document()
                 .set(request);

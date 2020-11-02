@@ -8,10 +8,13 @@ import com.mobileedu33.tutorme.data.FireStoreHelper;
 import com.mobileedu33.tutorme.data.dtos.GetProfileResult;
 import com.mobileedu33.tutorme.data.models.Assignment;
 import com.mobileedu33.tutorme.data.models.CurrentUserType;
+import com.mobileedu33.tutorme.data.models.TutorProfile;
+import com.mobileedu33.tutorme.data.models.TutorRequest;
 import com.mobileedu33.tutorme.data.models.UserType;
 import com.techyourchance.threadposter.BackgroundThreadPoster;
 import com.techyourchance.threadposter.UiThreadPoster;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -19,6 +22,8 @@ import java.util.concurrent.ExecutionException;
 import javax.inject.Inject;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 public class FetchAssingmentsUseCase extends BaseUseCase<Void, Void> {
     private final FireStoreHelper fireStoreHelper;
@@ -39,22 +44,37 @@ public class FetchAssingmentsUseCase extends BaseUseCase<Void, Void> {
     private void execute() {
         Realm realm = Realm.getDefaultInstance();
         CurrentUserType currentUserType = realm.where(CurrentUserType.class).findFirst();
-        if(currentUserType.getUserType() == UserType.TUTOR) getTutorAssignments();
-        else getStudentAssignments();
+        assert currentUserType != null;
+
+        if(currentUserType.getUserType() == UserType.TUTOR) getTutorAssignments(realm);
+        else getStudentAssignments(realm);
+
         realm.close();
     }
 
-    private void getStudentAssignments() {
-
+    private void getStudentAssignments(Realm realm) {
+        RealmResults<TutorProfile> tutorProfiles = realm.where(TutorProfile.class).findAll();
+        if (tutorProfiles.isEmpty()) {
+            notifySuccess(null);
+            return;
+        }
+        getAssignments(tutorProfiles);
     }
 
-    private void getTutorAssignments() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance()
-                .getCurrentUser();
-        if (currentUser == null) throw new IllegalStateException("User should not be null.");
+    private void getTutorAssignments(Realm realm) {
+        TutorProfile tutorProfile = realm.where(TutorProfile.class).findFirst();
+        if(tutorProfile == null) throw new IllegalStateException("There should be a tutor profile");
+        getAssignments(Collections.singletonList(tutorProfile));
+    }
+
+    private void getAssignments(List<TutorProfile> tutorProfiles) {
+        List<String> tutorIds = new ArrayList<>();
+        for (TutorProfile tutorProfile : tutorProfiles ) {
+            tutorIds.add(tutorProfile.getId());
+        }
 
         try {
-            List<Assignment> assignments = fireStoreHelper.getAssignments(Collections.singletonList(currentUser.getUid()));
+            List<Assignment> assignments = fireStoreHelper.getAssignments(tutorIds);
             handleResult(assignments);
         } catch (Exception e) {
             Log.e(TAG, "Error getting assignments", e);

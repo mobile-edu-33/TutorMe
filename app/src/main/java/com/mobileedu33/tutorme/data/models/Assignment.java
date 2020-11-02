@@ -3,11 +3,12 @@ package com.mobileedu33.tutorme.data.models;
 import java.io.Serializable;
 
 import io.realm.RealmModel;
+import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
-@RealmClass
-public class Assignment implements RealmModel, Serializable {
+
+public class Assignment extends RealmObject implements Serializable {
     @PrimaryKey
     private String refId = "";
     private String id = "";

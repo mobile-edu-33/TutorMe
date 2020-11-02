@@ -1,14 +1,12 @@
 package com.mobileedu33.tutorme.data.models;
 
-import io.realm.RealmModel;
-import io.realm.annotations.RealmClass;
+import io.realm.RealmObject;
 
-@RealmClass
-public class TutorRequest implements RealmModel {
+public class TutorRequest extends RealmObject {
     private String id;
     private String tutorId;
     private String studentId;
-    private boolean isAccepted;
+    private Boolean isAccepted;
 
     public String getId() {
         return id;
@@ -34,7 +32,7 @@ public class TutorRequest implements RealmModel {
         this.tutorId = tutorId;
     }
 
-    public boolean isAccepted() {
+    public Boolean isAccepted() {
         return isAccepted;
     }
 

@@ -1,10 +1,8 @@
 package com.mobileedu33.tutorme.data.models;
 
-import io.realm.RealmModel;
-import io.realm.annotations.RealmClass;
+import io.realm.RealmObject;
 
-@RealmClass
-public class Lesson implements RealmModel {
+public class Lesson extends RealmObject {
     private String id;
     private String title;
     private String description;

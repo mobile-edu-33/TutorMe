@@ -1,16 +1,14 @@
 package com.mobileedu33.tutorme.data.models;
 
-import io.realm.RealmModel;
-import io.realm.annotations.RealmClass;
+import io.realm.RealmObject;
 
-@RealmClass
-public class LiveLesson implements RealmModel {
+
+public class LiveLesson extends RealmObject {
     private String id;
+    private String creatorId;
     private String title;
     private String description;
-
     private String subject;
-
     private String datePosted;
     private String dateScheduled;
     private String imageUrl;
@@ -78,5 +76,13 @@ public class LiveLesson implements RealmModel {
 
     public void setDateScheduled(String dateScheduled) {
         this.dateScheduled = dateScheduled;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 }
