@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mobileedu33.tutorme.data.usecases.PublishAssignmentUseCase.UploadAssignmentResult;
@@ -15,6 +16,7 @@ import com.mobileedu33.tutorme.data.models.LiveLesson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -98,6 +100,23 @@ public class FirebaseStorageHelper {
             if(downloadUrl.isSuccessful()) result.setImageUrl(downloadUrl.getResult().toString());
         }
         return result;
+    }
+
+    public boolean deleteAssignmentFiles(String assignmentId) throws ExecutionException, InterruptedException {
+        StorageReference folderRef = this.storageReference.child(ASSIGNMENTS_ATTACHMENTS);
+//                .child(assignmentId);
+        Task<ListResult> listResultTask = folderRef.listAll();
+        Tasks.await(listResultTask);
+        List<Task<Void>> tasks = new ArrayList<>();
+        if (listResultTask.getResult() != null) {
+            List<StorageReference> files = listResultTask.getResult().getItems();
+            for (StorageReference ref : files) {
+                tasks.add(ref.delete());
+            }
+        }
+        Task<List<Task<?>>> listTask = Tasks.whenAllComplete(tasks);
+        Tasks.await(listTask);
+        return listTask.isSuccessful();
     }
 
     public boolean deleteFile(String parentFolder, String path) throws ExecutionException, InterruptedException {

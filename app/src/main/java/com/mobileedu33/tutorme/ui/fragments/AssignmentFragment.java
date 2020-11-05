@@ -3,14 +3,17 @@ package com.mobileedu33.tutorme.ui.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.mobileedu33.tutorme.R;
 import com.mobileedu33.tutorme.data.models.Assignment;
 import com.mobileedu33.tutorme.data.models.UserType;
@@ -110,9 +114,45 @@ public class AssignmentFragment extends Fragment implements AssignmentsAdapter.O
                 .navigate(R.id.action_assignmentsFragment_to_assignmentDetailFragment, bundle);
     }
 
+    @Override
+    public void onItemLongClick(Assignment assignment, View view) {
+        PopupMenu menu = new PopupMenu(requireContext(), view);
+        menu.inflate(R.menu.menu_delete_assignment);
+        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_delete_assignment:
+                        deletAssignment(assignment);
+                        break;
+                    case R.id.menu_edit_assignment:
+//                        TODO Implement assignment editing:
+                        break;
+                }
+                return true;
+            }
+        });
+        menu.show();
+    }
+
+    private void deletAssignment(Assignment assignment) {
+        progressBarList.setVisibility(View.VISIBLE);
+        viewModel.deleteAssignment(assignment)
+                .observe(this, this::handleDeleteResult);
+    }
+
     @OnClick(R.id.btnAddAssignment)
     public void onClick() {
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_assignmentsFragment_to_createAssignmentFragment);
+    }
+
+    private void handleDeleteResult(Boolean isSuccess) {
+        progressBarList.setVisibility(View.GONE);
+        if (isSuccess) {
+            baseActivity.showMessageSnackBar("Assignment deleted.", null, null);
+        } else {
+            baseActivity.showMessageSnackBar("Error deleting assignment", null, null);
+        }
     }
 }

@@ -30,7 +30,7 @@ public class DeleteAssignmentUseCase extends BaseUseCase<Void, Void> {
 
     private void execute(String assignmentId) {
         try {
-            boolean result = firebaseStorageHelper.deleteFile(FirebaseStorageHelper.ASSIGNMENTS_ATTACHMENTS, assignmentId);
+            boolean result = firebaseStorageHelper.deleteAssignmentFiles(assignmentId);
             handleDeleteAttachmentResult(result, assignmentId);
         } catch (Exception e) {
             Log.e(TAG, "Error deleting attachment", e);
@@ -57,7 +57,7 @@ public class DeleteAssignmentUseCase extends BaseUseCase<Void, Void> {
             Realm realm = Realm.getDefaultInstance();
             realm.executeTransaction(realm1 -> {
                 Assignment itemToDelete = realm1.where(Assignment.class).
-                        equalTo("id", id)
+                        equalTo("refId", id)
                         .findFirst();
                 if (itemToDelete != null) itemToDelete.deleteFromRealm();
             });

@@ -52,6 +52,10 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
         public void bind(final Assignment model, final OnItemClickListener listener) {
             itemView.setOnClickListener(v -> listener.onItemClick(model));
+            itemView.setOnLongClickListener(v -> {
+                listener.onItemLongClick(model, itemView);
+                return true;
+            });
             txtTitle.setText(model.getTitle());
             txtDescription.setText(model.getDescription());
             txtDueDate.setText(model.getDateDue());
@@ -84,6 +88,8 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
     public interface OnItemClickListener {
         void onItemClick(Assignment assignment);
+
+        void onItemLongClick(Assignment assignment, View view);
     }
 
 }

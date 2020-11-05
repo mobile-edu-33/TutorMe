@@ -57,7 +57,7 @@ public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
         profile.setId(user.getUid());
 
         try {
-            boolean isSuccess = fireStoreHelper.saveStudentProfile(profile, user.getUid());
+            boolean isSuccess = fireStoreHelper.saveStudentProfile(profile);
             if (isSuccess) handleCreateStudentSuccess(profile);
             else notifyError(null);
         } catch (Exception e) {
@@ -76,7 +76,7 @@ public class CreateUserProfileUseCase extends BaseUseCase<Void, Void> {
         profile.setId(user.getUid());
 
         try {
-            boolean isSuccess = fireStoreHelper.saveTutorProfile(profile, user.getUid());
+            boolean isSuccess = fireStoreHelper.saveTutorProfile(profile);
             if (isSuccess) handleCreateTutorSuccess(profile);
             else notifyError(null);
         } catch (Exception e) {

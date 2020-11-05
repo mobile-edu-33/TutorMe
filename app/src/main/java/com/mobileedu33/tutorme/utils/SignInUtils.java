@@ -43,7 +43,6 @@ public class SignInUtils {
         Intent signupIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setTheme(R.style.FirebaseUITheme)
-                .setLogo(R.drawable.logo)
                 .setAvailableProviders(idpConfigs)
                 .build();
         fragment.startActivityForResult(signupIntent, AUTH_SIGNIN_REQUEST_CODE);

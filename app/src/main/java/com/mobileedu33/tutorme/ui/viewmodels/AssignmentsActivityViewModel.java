@@ -9,6 +9,7 @@ import com.mobileedu33.tutorme.data.models.Assignment;
 import com.mobileedu33.tutorme.data.models.CurrentUserType;
 import com.mobileedu33.tutorme.data.models.UserType;
 import com.mobileedu33.tutorme.data.usecases.BaseUseCase.UseCaseListener;
+import com.mobileedu33.tutorme.data.usecases.DeleteAssignmentUseCase;
 import com.mobileedu33.tutorme.data.usecases.FetchAssingmentsUseCase;
 import com.mobileedu33.tutorme.data.usecases.PublishAssignmentUseCase;
 
@@ -20,15 +21,20 @@ import io.realm.RealmResults;
 
 public class AssignmentsActivityViewModel extends BaseViewModel{
     private final PublishAssignmentUseCase publishAssignmentUseCase;
+    private final DeleteAssignmentUseCase deleteAssignmentUseCase;
     private final FetchAssingmentsUseCase fetchAssingmentsUseCase;
     private MutableLiveData<Boolean> publishAssignmentLiveData = new MutableLiveData<>();
     private final Realm realm;
     private final MutableLiveData<List<Assignment>> assignmentsLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> deleteAssigmentLiveData = new MutableLiveData<>();
+
 
     @ViewModelInject
     public AssignmentsActivityViewModel(PublishAssignmentUseCase publishAssignmentUseCase,
+                                        DeleteAssignmentUseCase deleteAssignmentUseCase,
                                         FetchAssingmentsUseCase fetchAssingmentsUseCase) {
         this.publishAssignmentUseCase = publishAssignmentUseCase;
+        this.deleteAssignmentUseCase = deleteAssignmentUseCase;
         this.fetchAssingmentsUseCase = fetchAssingmentsUseCase;
         realm = Realm.getDefaultInstance();
     }
@@ -53,6 +59,11 @@ public class AssignmentsActivityViewModel extends BaseViewModel{
         return publishAssignmentLiveData;
     }
 
+    public LiveData<Boolean> deleteAssignment(Assignment assignment) {
+        deleteAssignmentUseCase.delete(assignment.getRefId());
+        return deleteAssigmentLiveData;
+    }
+
     private UseCaseListener<Void, String> publishAssignmentListener = new UseCaseListener<Void, String>() {
         @Override
         public void onSuccess(Void aVoid) {
@@ -67,16 +78,30 @@ public class AssignmentsActivityViewModel extends BaseViewModel{
         }
     };
 
+    private UseCaseListener<Void, Void> deleteAssignmentListener = new UseCaseListener<Void, Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+            deleteAssigmentLiveData.postValue(true);
+        }
+
+        @Override
+        public void onError(Void aVoid) {
+            deleteAssigmentLiveData.postValue(false);
+        }
+    };
+
     @Override
     public void executeOnResume() {
         super.executeOnResume();
         publishAssignmentUseCase.addListener(publishAssignmentListener);
+        deleteAssignmentUseCase.addListener(deleteAssignmentListener);
     }
 
     @Override
     public void executeOnPause() {
         super.executeOnPause();
         publishAssignmentUseCase.removeListener(publishAssignmentListener);
+        deleteAssignmentUseCase.removeListener(deleteAssignmentListener);
     }
 
     @Override
