@@ -10,6 +10,7 @@ import com.mobileedu33.tutorme.data.models.CurrentUserType;
 import com.mobileedu33.tutorme.data.models.UserType;
 import com.mobileedu33.tutorme.data.usecases.BaseUseCase.UseCaseListener;
 import com.mobileedu33.tutorme.data.usecases.DeleteAssignmentUseCase;
+import com.mobileedu33.tutorme.data.usecases.DownloadAttachmentsUseCase;
 import com.mobileedu33.tutorme.data.usecases.FetchAssingmentsUseCase;
 import com.mobileedu33.tutorme.data.usecases.PublishAssignmentUseCase;
 
@@ -23,19 +24,23 @@ public class AssignmentsActivityViewModel extends BaseViewModel{
     private final PublishAssignmentUseCase publishAssignmentUseCase;
     private final DeleteAssignmentUseCase deleteAssignmentUseCase;
     private final FetchAssingmentsUseCase fetchAssingmentsUseCase;
+    private final DownloadAttachmentsUseCase downloadAttachmentsUseCase;
     private MutableLiveData<Boolean> publishAssignmentLiveData = new MutableLiveData<>();
     private final Realm realm;
     private final MutableLiveData<List<Assignment>> assignmentsLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> deleteAssigmentLiveData = new MutableLiveData<>();
-
+    private MutableLiveData<Boolean> downloadAssigmentLiveData = new MutableLiveData<>();
+    private Assignment currentAssignment;
 
     @ViewModelInject
     public AssignmentsActivityViewModel(PublishAssignmentUseCase publishAssignmentUseCase,
                                         DeleteAssignmentUseCase deleteAssignmentUseCase,
-                                        FetchAssingmentsUseCase fetchAssingmentsUseCase) {
+                                        FetchAssingmentsUseCase fetchAssingmentsUseCase,
+                                        DownloadAttachmentsUseCase downloadAttachmentsUseCase) {
         this.publishAssignmentUseCase = publishAssignmentUseCase;
         this.deleteAssignmentUseCase = deleteAssignmentUseCase;
         this.fetchAssingmentsUseCase = fetchAssingmentsUseCase;
+        this.downloadAttachmentsUseCase = downloadAttachmentsUseCase;
         realm = Realm.getDefaultInstance();
     }
 
@@ -57,6 +62,12 @@ public class AssignmentsActivityViewModel extends BaseViewModel{
         publishAssignmentLiveData = new MutableLiveData<>();
         publishAssignmentUseCase.publish(assignment, attachment, image);
         return publishAssignmentLiveData;
+    }
+
+    public LiveData<Boolean> downloadAttachments(Assignment assignment, File destinationFolder) {
+        downloadAssigmentLiveData = new MutableLiveData<>();
+        downloadAttachmentsUseCase.download(assignment, destinationFolder);
+        return downloadAssigmentLiveData;
     }
 
     public LiveData<Boolean> deleteAssignment(Assignment assignment) {
@@ -90,11 +101,24 @@ public class AssignmentsActivityViewModel extends BaseViewModel{
         }
     };
 
+    private UseCaseListener<Void, Void> downloadAssignmentListener = new UseCaseListener<Void, Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+            downloadAssigmentLiveData.postValue(true);
+        }
+
+        @Override
+        public void onError(Void aVoid) {
+            downloadAssigmentLiveData.postValue(false);
+        }
+    };
+
     @Override
     public void executeOnResume() {
         super.executeOnResume();
         publishAssignmentUseCase.addListener(publishAssignmentListener);
         deleteAssignmentUseCase.addListener(deleteAssignmentListener);
+        downloadAttachmentsUseCase.addListener(downloadAssignmentListener);
     }
 
     @Override
@@ -102,6 +126,7 @@ public class AssignmentsActivityViewModel extends BaseViewModel{
         super.executeOnPause();
         publishAssignmentUseCase.removeListener(publishAssignmentListener);
         deleteAssignmentUseCase.removeListener(deleteAssignmentListener);
+        downloadAttachmentsUseCase.removeListener(downloadAssignmentListener);
     }
 
     @Override
@@ -114,5 +139,13 @@ public class AssignmentsActivityViewModel extends BaseViewModel{
     public void removeLiveDataObservers(LifecycleOwner lifecycleOwner) {
         messagesLiveData.removeObservers(lifecycleOwner);
         assignmentsLiveData.removeObservers(lifecycleOwner);
+    }
+
+    public void setCurrentAssignment(Assignment assignment) {
+        currentAssignment = assignment;
+    }
+
+    public Assignment getCurrentAssignment() {
+        return currentAssignment;
     }
 }

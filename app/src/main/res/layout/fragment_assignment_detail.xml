@@ -15,6 +15,7 @@
         android:layout_marginEnd="16dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/backgrounds/scenic" />
@@ -40,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/txtTitle"
-        app:layout_constraintTop_toBottomOf="@+id/txtTitle"
+        app:layout_constraintTop_toBottomOf="@+id/btnDownloadAttachments"
         tools:text="@tools:sample/lorem/random" />
 
     <TextView
@@ -64,4 +65,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/txtTitle"
         tools:text="@tools:sample/date/ddmmyy" />
+
+    <Button
+        android:id="@+id/btnDownloadAttachments"
+        style="@android:style/Widget.Material.Light.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/small_button_background"
+        android:text="@string/download_attachment"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/txtDueDate"
+        app:layout_constraintTop_toBottomOf="@+id/txtDueDate" />
 </androidx.constraintlayout.widget.ConstraintLayout>

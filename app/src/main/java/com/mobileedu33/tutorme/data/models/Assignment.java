@@ -2,10 +2,8 @@ package com.mobileedu33.tutorme.data.models;
 
 import java.io.Serializable;
 
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmClass;
 
 
 public class Assignment extends RealmObject implements Serializable {
@@ -17,7 +15,8 @@ public class Assignment extends RealmObject implements Serializable {
     private String description= "";
     private String subject= "";
     private String datePosted= "";
-    private String dateDue= "";
+    private String displayDueDate = "";
+    private long dueDate;
     private String imageUrl= "";
     private String attachmentsUrl= "";
 
@@ -94,11 +93,19 @@ public class Assignment extends RealmObject implements Serializable {
         this.datePosted = datePosted;
     }
 
-    public String getDateDue() {
-        return dateDue;
+    public String getDisplayDueDate() {
+        return displayDueDate;
     }
 
-    public void setDateDue(String dateDue) {
-        this.dateDue = dateDue;
+    public void setDisplayDueDate(String displayDueDate) {
+        this.displayDueDate = displayDueDate;
+    }
+
+    public long getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(long dueDate) {
+        this.dueDate = dueDate;
     }
 }

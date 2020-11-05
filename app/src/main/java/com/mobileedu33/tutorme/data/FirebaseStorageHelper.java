@@ -5,8 +5,10 @@ import android.net.Uri;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mobileedu33.tutorme.data.usecases.PublishAssignmentUseCase.UploadAssignmentResult;
@@ -103,8 +105,8 @@ public class FirebaseStorageHelper {
     }
 
     public boolean deleteAssignmentFiles(String assignmentId) throws ExecutionException, InterruptedException {
-        StorageReference folderRef = this.storageReference.child(ASSIGNMENTS_ATTACHMENTS);
-//                .child(assignmentId);
+        StorageReference folderRef = this.storageReference.child(ASSIGNMENTS_ATTACHMENTS)
+                .child(assignmentId);
         Task<ListResult> listResultTask = folderRef.listAll();
         Tasks.await(listResultTask);
         List<Task<Void>> tasks = new ArrayList<>();
@@ -114,9 +116,27 @@ public class FirebaseStorageHelper {
                 tasks.add(ref.delete());
             }
         }
-        Task<List<Task<?>>> listTask = Tasks.whenAllComplete(tasks);
+        Task<Void> listTask = Tasks.whenAll(tasks);
         Tasks.await(listTask);
         return listTask.isSuccessful();
+    }
+
+    public boolean getAssignmentFiles(String assignmentId, File destinationFolder) throws ExecutionException, InterruptedException {
+        StorageReference folderRef = this.storageReference.child(ASSIGNMENTS_ATTACHMENTS)
+                .child(assignmentId);
+        Task<ListResult> listResultTask = folderRef.listAll();
+        Tasks.await(listResultTask);
+        List<FileDownloadTask> tasks = new ArrayList<>();
+        if (listResultTask.getResult() != null) {
+            List<StorageReference> files = listResultTask.getResult().getItems();
+            for (StorageReference ref : files) {
+                File destinationFile = new File(destinationFolder, ref.getName());
+                tasks.add(ref.getFile(destinationFile));
+            }
+        }
+        Task<Void> downloadTask = Tasks.whenAll(tasks);
+        Tasks.await(downloadTask);
+        return downloadTask.isSuccessful();
     }
 
     public boolean deleteFile(String parentFolder, String path) throws ExecutionException, InterruptedException {

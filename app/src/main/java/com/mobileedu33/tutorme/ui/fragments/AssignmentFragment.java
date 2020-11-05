@@ -102,20 +102,22 @@ public class AssignmentFragment extends Fragment implements AssignmentsAdapter.O
                         progressBarList.setVisibility(View.GONE);
                         txtNothingToShow.setVisibility(View.VISIBLE);
                     }
+                    assignmentsAdapter.notifyDataSetChanged();
                 });
 
     }
 
     @Override
     public void onItemClick(Assignment assignment) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("assignment", assignment);
+        viewModel.setCurrentAssignment(assignment);
         NavHostFragment.findNavController(this)
-                .navigate(R.id.action_assignmentsFragment_to_assignmentDetailFragment, bundle);
+                .navigate(R.id.action_assignmentsFragment_to_assignmentDetailFragment);
     }
 
     @Override
     public void onItemLongClick(Assignment assignment, View view) {
+        if(viewModel.getUserType() == UserType.STUDENT) return;
+
         PopupMenu menu = new PopupMenu(requireContext(), view);
         menu.inflate(R.menu.menu_delete_assignment);
         menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

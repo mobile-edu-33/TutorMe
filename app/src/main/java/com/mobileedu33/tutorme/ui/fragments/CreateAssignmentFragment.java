@@ -1,6 +1,7 @@
 package com.mobileedu33.tutorme.ui.fragments;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -31,10 +33,22 @@ import com.mobileedu33.tutorme.ui.activities.BaseActivity;
 import com.mobileedu33.tutorme.ui.viewmodels.AssignmentsActivityViewModel;
 import com.mobileedu33.tutorme.utils.FileUtils;
 
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.time.FastDateParser;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +58,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import static android.app.Activity.RESULT_OK;
 
 @AndroidEntryPoint
-public class CreateAssignmentFragment extends Fragment {
+public class CreateAssignmentFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     // Request code for selecting a PDF document.
     private static final int PICK_ATTACHMENT_FILE = 2;
@@ -61,6 +75,8 @@ public class CreateAssignmentFragment extends Fragment {
     ProgressBar progressBar;
     @BindView(R.id.imageViewHeaderImage)
     ImageView imageViewHeaderImage;
+    @BindView(R.id.editTextDate)
+    EditText editTextDate;
     private Assignment assignment = new Assignment();
     private File attachment;
     private File image;
@@ -158,12 +174,16 @@ public class CreateAssignmentFragment extends Fragment {
     public void onPublish() {
         String title = editTextTitle.getText().toString();
         String description = editTextDescription.getText().toString();
+        String dueDate = editTextDate.getText().toString();
 
         if (title.isEmpty()) {
             baseActivity.showMessageSnackBar("Title cannot be empty. Please add a title!", null, null);
             return;
         } else if (description.isEmpty()) {
             baseActivity.showMessageSnackBar("Description cannot be empty. Please add description!", null, null);
+            return;
+        } else if (dueDate.isEmpty()) {
+            baseActivity.showMessageSnackBar("Due date cannot be empty. Please enter due date", null, null);
             return;
         }
         assignment.setTitle(editTextTitle.getText().toString());
@@ -193,7 +213,7 @@ public class CreateAssignmentFragment extends Fragment {
     }
 
     private void handleChooseFileResponse(int requestCode, Uri uri) {
-        String fileName =  FileUtils.getFileName(uri);
+        String fileName = FileUtils.getFileDisplayName(uri, requireContext());
         File cache = new File(requireContext().getCacheDir(), fileName);
 
         try {
@@ -215,9 +235,8 @@ public class CreateAssignmentFragment extends Fragment {
                         .into(imageViewHeaderImage);
                 break;
             case PICK_ATTACHMENT_FILE:
-                String displayName = FileUtils.getFileDisplayName(uri, requireContext());
-                displayName = displayName.isEmpty() ? "Attachment 1" : displayName;
-                txtAttachment.setText(displayName);
+                fileName = fileName.isEmpty() ? "Attachment 1" : fileName;
+                txtAttachment.setText(fileName);
                 attachment = cache;
         }
     }
@@ -232,6 +251,31 @@ public class CreateAssignmentFragment extends Fragment {
         baseActivity.showMessageSnackBar(
                 "Grant storage access to attach items!", "GRANT PERMISSION",
                 this::requestReadStoragePermission
-                );
+        );
+    }
+
+    @OnClick(R.id.viewPickDate)
+    public void onClick() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), this, year, month, day);
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String dateString = "" + dayOfMonth + "-" + month + "-" + year;
+        try {
+            Date date = DateUtils.parseDate(dateString, Locale.getDefault(), "dd-MM-yyyy");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E dd MMM yyyy", Locale.getDefault());
+            assignment.setDueDate(date.getTime());
+            String dueDate = simpleDateFormat.format(date);
+            assignment.setDisplayDueDate(dueDate);
+            editTextDate.setText(dueDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }
